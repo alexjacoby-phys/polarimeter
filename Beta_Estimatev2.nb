@@ -1,0 +1,493 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     21632,        485]
+NotebookOptionsPosition[     20385,        460]
+NotebookOutlinePosition[     20785,        476]
+CellTagsIndexPosition[     20742,        473]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+   "note", " ", "that", " ", "this", " ", "places", " ", "the", " ", "units", 
+    " ", "of", " ", "x", " ", "in", " ", "mm"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"lambda", " ", "=", " ", 
+     RowBox[{"532", " ", "*", " ", 
+      RowBox[{"10", "^", 
+       RowBox[{"(", 
+        RowBox[{"-", "6"}], ")"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ell10", " ", "=", " ", "5.4"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ell20", " ", "=", " ", "2"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"ne", " ", "=", " ", "1.55332"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"no", " ", "=", " ", "1.54422"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"alpha", " ", "=", " ", 
+     RowBox[{"2", "*", 
+      RowBox[{"(", 
+       RowBox[{"Pi", "/", "180"}], ")"}]}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"polarization", "[", 
+     RowBox[{"theta_", ",", "phi_"}], "]"}], " ", ":=", " ", 
+    RowBox[{"(", "\[NoBreak]", GridBox[{
+       {
+        RowBox[{"Cos", "[", "theta", "]"}]},
+       {
+        RowBox[{
+         RowBox[{"Sin", "[", "theta", "]"}], "*", 
+         RowBox[{"Exp", "[", 
+          RowBox[{"I", "*", "phi"}], "]"}]}]}
+      }], "\[NoBreak]", ")"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"analyzer", "[", "omega_", "]"}], ":=", "  ", 
+    RowBox[{"Transpose", "[", 
+     RowBox[{"(", "\[NoBreak]", GridBox[{
+        {
+         RowBox[{"Cos", "[", "omega", "]"}]},
+        {
+         RowBox[{"Sin", "[", "omega", "]"}]}
+       }], "\[NoBreak]", ")"}], "]"}]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ell1", "[", "x_", "]"}], ":=", " ", 
+     RowBox[{"ell10", " ", "-", " ", 
+      RowBox[{"x", "*", 
+       RowBox[{"Tan", "[", "alpha", "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ell2", "[", "x_", "]"}], ":=", " ", 
+     RowBox[{"ell20", " ", "+", 
+      RowBox[{"x", "*", 
+       RowBox[{"Tan", "[", "alpha", "]"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"phi1e", "[", "x_", "]"}], ":=", " ", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"2", "*", "Pi"}], ")"}], "*", 
+      RowBox[{"ell1", "[", "x", "]"}], "*", 
+      RowBox[{"ne", "/", "lambda"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"phi1o", "[", "x_", "]"}], ":=", " ", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"2", "*", "Pi"}], ")"}], "*", 
+      RowBox[{"ell1", "[", "x", "]"}], "*", 
+      RowBox[{"no", "/", "lambda"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"phi2e", "[", "x_", "]"}], ":=", "  ", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"2", "*", "Pi"}], ")"}], "*", 
+      RowBox[{"ell2", "[", "x", "]"}], "*", 
+      RowBox[{"ne", "/", "lambda"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"phi20", "[", "x_", "]"}], ":=", "  ", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"2", "*", "Pi"}], ")"}], "*", 
+      RowBox[{"ell2", "[", "x", "]"}], "*", 
+      RowBox[{"no", "/", "lambda"}]}]}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"w1", "[", "x_", "]"}], " ", ":=", " ", 
+     RowBox[{"(", "\[NoBreak]", GridBox[{
+        {
+         RowBox[{"Exp", "[", 
+          RowBox[{"I", "*", 
+           RowBox[{"phi1e", "[", "x", "]"}]}], "]"}], "0"},
+        {"0", 
+         RowBox[{"Exp", "[", 
+          RowBox[{"I", "*", 
+           RowBox[{"phi1o", "[", "x", "]"}]}], "]"}]}
+       }], "\[NoBreak]", ")"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"w2", "[", "x_", "]"}], " ", ":=", "  ", 
+     RowBox[{"(", "\[NoBreak]", GridBox[{
+        {
+         RowBox[{"Exp", "[", 
+          RowBox[{"I", "*", 
+           RowBox[{"phi2e", "[", "x", "]"}]}], "]"}], "0"},
+        {"0", 
+         RowBox[{"Exp", "[", 
+          RowBox[{"I", "*", 
+           RowBox[{"phi20", "[", "x", "]"}]}], "]"}]}
+       }], "\[NoBreak]", ")"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"r1", "[", "beta_", "]"}], " ", ":=", " ", 
+     RowBox[{"RotationMatrix", "[", 
+      RowBox[{"-", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"Pi", "/", "4"}], ")"}], "+", "beta"}], ")"}]}], "]"}]}], 
+    ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"r2", "[", "beta_", "]"}], ":=", " ", 
+     RowBox[{"RotationMatrix", "[", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"Pi", "/", "4"}], ")"}], "+", "beta"}], ")"}], "]"}]}], 
+    ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.903985539565737*^9, 3.903985540457798*^9}, {
+   3.9039855783207493`*^9, 3.9039856346407013`*^9}, {3.903985880677887*^9, 
+   3.903985926939492*^9}, {3.9039860874337587`*^9, 3.903986091249535*^9}, 
+   3.903986148693163*^9, {3.903986190891746*^9, 3.903986199369082*^9}, 
+   3.903986232119891*^9, {3.9039864551539593`*^9, 3.903986494057748*^9}, {
+   3.9039874355062037`*^9, 3.9039874552716846`*^9}, {3.9039875978618507`*^9, 
+   3.9039876715687227`*^9}, {3.903987725345276*^9, 3.903987755266181*^9}, {
+   3.903987785688184*^9, 3.9039878975363894`*^9}, {3.9039879501298647`*^9, 
+   3.9039880294711123`*^9}, {3.903988114613639*^9, 3.903988118265277*^9}, {
+   3.903988346321828*^9, 3.903988385741454*^9}, {3.9039886478376713`*^9, 
+   3.903988680914813*^9}, {3.903989026149663*^9, 3.903989032533649*^9}, {
+   3.90398920327798*^9, 3.903989203571611*^9}, {3.903989314063048*^9, 
+   3.903989317580687*^9}, {3.903989798144349*^9, 3.903989822658793*^9}, {
+   3.90399012504403*^9, 3.9039901264989843`*^9}, {3.90399017281361*^9, 
+   3.903990173231283*^9}, {3.903990321164687*^9, 3.903990338487688*^9}, {
+   3.9039905217519703`*^9, 3.90399052228183*^9}, {3.903991196488728*^9, 
+   3.90399122300837*^9}, {3.903991841151038*^9, 3.903991873267239*^9}, {
+   3.9039920005045013`*^9, 3.9039920020460043`*^9}, {3.903992160988741*^9, 
+   3.9039921640141*^9}, 3.903992347590715*^9, 3.903992504027314*^9, {
+   3.90399274407647*^9, 3.903992958973752*^9}, {3.903993188487879*^9, 
+   3.903993234404883*^9}, 3.9039932835987177`*^9, {3.903993381146447*^9, 
+   3.9039933853431873`*^9}, 3.903996378440016*^9, {3.90399659778364*^9, 
+   3.9039966379230824`*^9}, {3.9039969129896603`*^9, 3.903997048033429*^9}, {
+   3.9039971890841627`*^9, 3.903997202070821*^9}, {3.903997234362472*^9, 
+   3.903997281501268*^9}, {3.903997398908558*^9, 3.903997427341736*^9}, {
+   3.9039974710093393`*^9, 3.9039976107661133`*^9}, {3.903999125264234*^9, 
+   3.90399913011837*^9}, {3.9039991884975023`*^9, 3.9039991909108*^9}, {
+   3.903999820237475*^9, 3.903999883898231*^9}, {3.904000027512677*^9, 
+   3.904000028357028*^9}, {3.9040000740507717`*^9, 3.904000076542143*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"a12505f9-a44e-40e6-9959-5f2e393976d6"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"wedge", "[", 
+      RowBox[{"x_", ",", "beta_"}], "]"}], " ", ":=", " ", 
+     RowBox[{"FullSimplify", "[", 
+      RowBox[{
+       RowBox[{"r2", "[", "beta", "]"}], ".", 
+       RowBox[{"w2", "[", "x", "]"}], ".", 
+       RowBox[{"r1", "[", "beta", "]"}], ".", 
+       RowBox[{"w1", "[", "x", "]"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"f", "[", 
+     RowBox[{"x_", ",", "beta_", ",", "theta_", ",", "phi_", ",", "omega_"}], 
+     "]"}], ":=", 
+    RowBox[{"Abs", "[", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"analyzer", "[", "omega", "]"}], ".", 
+       RowBox[{"wedge", "[", 
+        RowBox[{"x", ",", "beta"}], "]"}], ".", 
+       RowBox[{"polarization", "[", 
+        RowBox[{"theta", ",", "phi"}], "]"}]}], ")"}], "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.9039887167157*^9, 3.9039887199670467`*^9}, {
+   3.903988788393268*^9, 3.9039888037618093`*^9}, {3.903988877662641*^9, 
+   3.903988922499156*^9}, {3.903988978492017*^9, 3.903989000986363*^9}, {
+   3.903989037811713*^9, 3.903989061035552*^9}, {3.9039891042104387`*^9, 
+   3.9039891315884027`*^9}, {3.903989163746117*^9, 3.9039891759321203`*^9}, {
+   3.9039900177294483`*^9, 3.903990026593446*^9}, 3.903992786027563*^9, {
+   3.903996947381627*^9, 3.9039969474104443`*^9}, {3.903997305843272*^9, 
+   3.903997305952636*^9}, {3.903997617388262*^9, 3.9039977160609903`*^9}, {
+   3.903998537741692*^9, 3.903998538608913*^9}, {3.903998591353662*^9, 
+   3.9039985924117727`*^9}, {3.903999898125341*^9, 3.903999932813094*^9}, {
+   3.904000036150889*^9, 3.9040000368694067`*^9}},
+ CellLabel->"In[19]:=",ExpressionUUID->"2675eac3-7dcd-4acf-8c47-3c751d555a32"],
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{"f", "[", 
+      RowBox[{"x", ",", "beta", ",", "theta", ",", "0", ",", "omega"}], "]"}],
+      ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", "0", ",", "10"}], "}"}], ",", 
+     RowBox[{"PlotRange", "->", " ", "1"}]}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"theta", ",", "0", ",", "Pi"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"beta", ",", "0", ",", 
+     RowBox[{"Pi", "/", "4"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"omega", ",", "0", ",", "Pi"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.903992668911523*^9, 3.903992712397272*^9}, 
+   3.903993277633849*^9, {3.903996490716964*^9, 3.9039964917439528`*^9}, 
+   3.903996587752623*^9, {3.903997212257794*^9, 3.9039972228639812`*^9}, {
+   3.903997360579214*^9, 3.9039973648175993`*^9}, {3.9039977347886343`*^9, 
+   3.903997814971764*^9}, {3.903997933753159*^9, 3.9039979391941338`*^9}, {
+   3.903998863985098*^9, 3.9039988831928167`*^9}, {3.90399993693489*^9, 
+   3.903999944616684*^9}, {3.9040000126344957`*^9, 3.9040000132086897`*^9}, {
+   3.904000360200899*^9, 3.904000360318337*^9}, {3.904000538800762*^9, 
+   3.904000545705227*^9}},
+ CellLabel->"In[23]:=",ExpressionUUID->"91929323-9289-41e0-9015-e498b0108d56"],
+
+Cell["\<\
+Note that for any choice of beta, there is always a choice of theta and omega \
+such that we get perfect sinusoids with 1f and 2f plus constants. Seemingly \
+these constants are not equal and depend on beta, possibly uniquely if we \
+take both of them. note that zero is the angle of the thick wedge optical \
+axis, theta is the first linear polarizer, beta is the thin wedge optical \
+axis, and omega is the second polarizer.\
+\>", "Text",
+ CellChangeTimes->{{3.904001920166443*^9, 3.9040019636217623`*^9}, {
+  3.904002263944915*^9, 
+  3.90400232169735*^9}},ExpressionUUID->"34d01ad3-bbb1-4c81-8098-\
+bb29f9c5ac99"],
+
+Cell[BoxData[
+ RowBox[{
+  TagBox[
+   StyleBox[
+    DynamicModuleBox[{$CellContext`beta$$ = 
+     0.5120796025351363, $CellContext`omega$$ = 
+     2.092300707290802, $CellContext`theta$$ = 0.7916813487046279, 
+     Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+     Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+     1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+       Hold[$CellContext`theta$$], 0, Pi}, {
+       Hold[$CellContext`beta$$], 0, Rational[1, 4] Pi}, {
+       Hold[$CellContext`omega$$], 0, Pi}}, Typeset`size$$ = {
+     360., {111., 115.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+     Typeset`skipInitDone$$ = True}, 
+     DynamicBox[Manipulate`ManipulateBoxes[
+      1, StandardForm, 
+       "Variables" :> {$CellContext`beta$$ = 0, $CellContext`omega$$ = 
+         0, $CellContext`theta$$ = 0}, "ControllerVariables" :> {}, 
+       "OtherVariables" :> {
+        Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+         Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+         Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+         Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Plot[
+         $CellContext`f[$CellContext`x, $CellContext`beta$$, \
+$CellContext`theta$$, 0, $CellContext`omega$$], {$CellContext`x, 0, 10}, 
+         PlotRange -> 1], 
+       "Specifications" :> {{$CellContext`theta$$, 0, 
+          Pi}, {$CellContext`beta$$, 0, Rational[1, 4] 
+          Pi}, {$CellContext`omega$$, 0, Pi}}, "Options" :> {}, 
+       "DefaultOptions" :> {}],
+      ImageSizeCache->{404., {184., 189.}},
+      SingleEvaluation->True],
+     Deinitialization:>None,
+     DynamicModuleValues:>{},
+     SynchronousInitialization->True,
+     UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+     UnsavedVariables:>{Typeset`initDone$$},
+     UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+    Deployed->True,
+    StripOnInput->False],
+   Manipulate`InterpretManipulate[1]], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.904001795470751*^9, 
+  3.904001795477991*^9}},ExpressionUUID->"0ca03b97-7d63-487a-b712-\
+ab38ce2b51fa"],
+
+Cell["\<\
+This is just a quick test to see whether we can find these matched peaks for \
+the initial and final polarizer normal to one another since this is easily \
+done to high precision and accuracy.\
+\>", "Text",
+ CellChangeTimes->{{3.903997287755157*^9, 3.903997291765809*^9}, {
+   3.903997338801076*^9, 3.903997340157918*^9}, {3.903997378433935*^9, 
+   3.903997380656468*^9}, {3.903999157468555*^9, 3.903999182670782*^9}, 
+   3.904001825552594*^9, {3.904001869951015*^9, 3.9040018985325623`*^9}, {
+   3.904001966238391*^9, 
+   3.9040020275825167`*^9}},ExpressionUUID->"f23316fd-8f5e-472c-8d6c-\
+e58cea5f2a64"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"g", "[", 
+    RowBox[{"x_", ",", "beta_", ",", "theta_", ",", "phi_"}], "]"}], ":=", 
+   RowBox[{"Abs", "[", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"analyzer", "[", 
+       RowBox[{"theta", "+", 
+        RowBox[{"(", 
+         RowBox[{"Pi", "/", "2"}], ")"}]}], "]"}], ".", 
+      RowBox[{"wedge", "[", 
+       RowBox[{"x", ",", "beta"}], "]"}], ".", 
+      RowBox[{"polarization", "[", 
+       RowBox[{"theta", ",", "phi"}], "]"}]}], ")"}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.9039887167157*^9, 3.9039887199670467`*^9}, {
+   3.903988788393268*^9, 3.9039888037618093`*^9}, {3.903988877662641*^9, 
+   3.903988922499156*^9}, {3.903988978492017*^9, 3.903989000986363*^9}, {
+   3.903989037811713*^9, 3.903989061035552*^9}, {3.9039891042104387`*^9, 
+   3.9039891315884027`*^9}, {3.903989163746117*^9, 3.9039891759321203`*^9}, {
+   3.9039900177294483`*^9, 3.903990026593446*^9}, 3.903992786027563*^9, {
+   3.903996947381627*^9, 3.9039969474104443`*^9}, {3.903997305843272*^9, 
+   3.903997305952636*^9}, {3.903997617388262*^9, 3.9039977160609903`*^9}, {
+   3.903998537741692*^9, 3.903998538608913*^9}, {3.903998591353662*^9, 
+   3.9039985924117727`*^9}, {3.903999898125341*^9, 3.903999932813094*^9}, {
+   3.904000036150889*^9, 3.9040000368694067`*^9}, {3.904001697737845*^9, 
+   3.904001814359392*^9}, 3.904001857633287*^9},
+ CellLabel->"In[26]:=",ExpressionUUID->"b9a80e5e-1b7f-41dc-8402-d9840af02a96"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{"g", "[", 
+      RowBox[{"x", ",", "beta", ",", "theta", ",", "0"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", "0", ",", "10"}], "}"}], ",", 
+     RowBox[{"PlotRange", "->", " ", "1"}]}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"theta", ",", "0", ",", 
+     RowBox[{"Pi", "/", "4"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"beta", ",", "0", ",", 
+     RowBox[{"Pi", "/", "4"}]}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.903992668911523*^9, 3.903992712397272*^9}, 
+   3.903993277633849*^9, {3.903996490716964*^9, 3.9039964917439528`*^9}, 
+   3.903996587752623*^9, {3.903997212257794*^9, 3.9039972228639812`*^9}, {
+   3.903997360579214*^9, 3.9039973648175993`*^9}, {3.9039977347886343`*^9, 
+   3.903997814971764*^9}, {3.903997933753159*^9, 3.9039979391941338`*^9}, {
+   3.903998863985098*^9, 3.9039988831928167`*^9}, {3.90399993693489*^9, 
+   3.903999944616684*^9}, {3.9040000126344957`*^9, 3.9040000132086897`*^9}, {
+   3.904000360200899*^9, 3.904000360318337*^9}, {3.904000538800762*^9, 
+   3.904000545705227*^9}, {3.9040017659922447`*^9, 3.9040017719276657`*^9}, {
+   3.904001843311631*^9, 3.904001860343696*^9}, {3.904002161264069*^9, 
+   3.904002165116557*^9}},
+ CellLabel->"In[28]:=",ExpressionUUID->"428d5abd-08e3-4bd6-95fe-820c2dbfef9e"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`beta$$ = 
+    0.3989822670059037, $CellContext`theta$$ = 0.7853981633974483, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+      Hold[$CellContext`theta$$], 0, Rational[1, 4] Pi}, {
+      Hold[$CellContext`beta$$], 0, Rational[1, 4] Pi}}, Typeset`size$$ = {
+    360., {111., 115.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`beta$$ = 0, $CellContext`theta$$ = 0}, 
+      "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Plot[
+        $CellContext`g[$CellContext`x, $CellContext`beta$$, \
+$CellContext`theta$$, 0], {$CellContext`x, 0, 10}, PlotRange -> 1], 
+      "Specifications" :> {{$CellContext`theta$$, 0, Rational[1, 4] 
+         Pi}, {$CellContext`beta$$, 0, Rational[1, 4] Pi}}, "Options" :> {}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{404., {170., 175.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{{3.903996589867178*^9, 3.9039966411438227`*^9}, {
+   3.903997307703926*^9, 3.903997348976696*^9}, {3.9039977727853737`*^9, 
+   3.903997816773843*^9}, 3.903997940499382*^9, 3.903998542342865*^9, 
+   3.903998597956128*^9, {3.903998871299471*^9, 3.903998884825017*^9}, 
+   3.903999144709586*^9, {3.903999175594092*^9, 3.903999193701406*^9}, {
+   3.903999947454248*^9, 3.9039999591342363`*^9}, 3.904000013850614*^9, 
+   3.90400005780494*^9, 3.904000092026813*^9, {3.9040003619267483`*^9, 
+   3.9040003880759497`*^9}, 3.904000546259639*^9, 3.9040020347427187`*^9, 
+   3.904002166597022*^9},
+ CellLabel->"Out[28]=",ExpressionUUID->"839ff3a1-a31a-4f79-a5f2-e00b0c238c49"]
+}, Open  ]],
+
+Cell["\<\
+Ideas for tests:
+if you can match the peaks up (assuming there are sufficiently many to \
+correct for overall real space intensity variation) you can get beta from the \
+distance in theta between the 1f and 2f peaks if you have omega = theta + \
+pi/2 (see above graph). This is super easy to align (since you just need to \
+get to the point where the polarizers are crossed) and if you have more than \
+a couple peaks you can use periodicity to save you from overall intensity \
+variations. That is, in 1f you know the peaks have to all be the same, and in \
+2f peaks must always match their nearest neighbours.
+\
+\>", "Text",
+ CellChangeTimes->{{3.904002216933507*^9, 3.9040022484981747`*^9}, {
+  3.904002326833704*^9, 
+  3.904002506872854*^9}},ExpressionUUID->"e92c61d1-9bd4-4ac6-af68-\
+2969ef61c8d7"]
+},
+WindowSize->{Full, Full},
+WindowMargins->{{-1315, Automatic}, {Automatic, -359}},
+FrontEndVersion->"13.3 for Mac OS X ARM (64-bit) (July 24, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"bf41e6bd-5dac-463a-b8a4-8b50023e5420"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 7184, 172, 712, "Input",ExpressionUUID->"a12505f9-a44e-40e6-9959-5f2e393976d6"],
+Cell[7745, 194, 1747, 36, 73, "Input",ExpressionUUID->"2675eac3-7dcd-4acf-8c47-3c751d555a32"],
+Cell[9495, 232, 1295, 27, 30, "Input",ExpressionUUID->"91929323-9289-41e0-9015-e498b0108d56"],
+Cell[10793, 261, 626, 11, 58, "Text",ExpressionUUID->"34d01ad3-bbb1-4c81-8098-bb29f9c5ac99"],
+Cell[11422, 274, 2150, 44, 424, "Input",ExpressionUUID->"0ca03b97-7d63-487a-b712-ab38ce2b51fa"],
+Cell[13575, 320, 615, 11, 35, "Text",ExpressionUUID->"f23316fd-8f5e-472c-8d6c-e58cea5f2a64"],
+Cell[14193, 333, 1481, 28, 52, "Input",ExpressionUUID->"b9a80e5e-1b7f-41dc-8402-d9840af02a96"],
+Cell[CellGroupData[{
+Cell[15699, 365, 1377, 27, 30, "Input",ExpressionUUID->"428d5abd-08e3-4bd6-95fe-820c2dbfef9e"],
+Cell[17079, 394, 2474, 46, 364, "Output",ExpressionUUID->"839ff3a1-a31a-4f79-a5f2-e00b0c238c49"]
+}, Open  ]],
+Cell[19568, 443, 813, 15, 127, "Text",ExpressionUUID->"e92c61d1-9bd4-4ac6-af68-2969ef61c8d7"]
+}
+]
+*)
+

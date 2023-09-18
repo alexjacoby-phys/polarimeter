@@ -157,7 +157,7 @@ plotdat2 = take_avg_of_slice.(avgpoints2; normal=n1, dat_itp=itp)
 
 import Plots
 
-Plots.plot(dists1, plotdat1, color = :blue, legend = :none)
+Plots.plot(dists1, plotdat1, color = :blue, legend = :none);
 Plots.plot!(dists2,plotdat2,color = :blue)
 
 #LinearAlgebra.dot((c1 - ap10),n1) #good to convince yourself these are orthogonal (for default orientation = \phi positive)

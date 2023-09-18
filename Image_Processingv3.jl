@@ -8,7 +8,7 @@ end
 
 
 
-fn = string("data/", "2f_test.png")
+fn = string("early_test_data/", "1f_test.png")
 raw_image = Images.Gray.(Images.load(fn));
 dat = Float64.(raw_image)
 (N, M) = size(dat)
@@ -63,7 +63,7 @@ pftdat = abs.(pFTL * dat * pFTR)
 # pftdat = pftdat/sum(pftdat)
 # θ =   sum(pftdat .* anglemat)
 
-# import ImageTransformations
+import ImageTransformations
 
 
 # mod(θ - ϕ,π)* (180/π)
