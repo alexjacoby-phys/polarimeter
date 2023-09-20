@@ -1,36 +1,57 @@
 import Images, FileIO, LinearAlgebra
 
 home = "/Users/alexjacoby/Documents/Research_Code/polarimeter/Extinction_Ratio_Analysis"
-dat = "/Volumes/AJACOBY/extinction/"
-
+dat = "/Volumes/AJACOBY/extinction_v3/"
+cd(home)
 
 
 function array_mean(M::Array{Float64})
     return sum(M)/*(size(M)...)
 end
 
-fn_vec = [string(dat,i,"_exp=100ms.png") for i in -15:15]
-
-pre_dat = Images.load.(fn_vec)
 
 
-dat = [Float64.(Images.Gray.(img)) for img in pre_dat]
+import DelimitedFiles, Plots
 
-plotdat = array_mean.(dat)
+cd(home)
+
+pm_dat = DelimitedFiles.readdlm("Power_Meter_Low.txt")
+
+
+
+
+
+
+# fn_vec = [string(dat,i,"_exp=100ms.png") for i in -15:15]
+
+# pre_dat = Images.load.(fn_vec)
+
+
+# dat = [Float64.(Images.Gray.(img)) for img in pre_dat]
+
+# plotdat = array_mean.(dat)
+
+
+Images.Gray.(Images.load(string(dat, "low_80mspt2.png")))[(300-75)+30:(300+75),(650-75):(650+75)]
+Images.Gray.(Images.load(string(dat, "med_0.04ms.png")))[(300-75)+30:(300+75), (650-75):(650+75)]
+
+
+rng = [(300-75)+30:(300+75), (650-75):(650+75)]
+
+# Images.Gray.(Images.load(string(dat, "low_40ms.png")))[(300-75)+30:(300+75), (650-75):(650+75)]
+# Images.Gray.(Images.load(string(dat, "0.04ms_med.png")))[(300-75)+30:(300+75), (650-75):(650+75)]
+cd(home)
+min_dat = array_mean(Float64.(Images.Gray.(Images.load(string(dat, "low_80mspt2.png"))))[rng...])
+med_dat = array_mean(Float64.(Images.Gray.(Images.load(string(dat, "med_0.04ms.png"))))[rng...])
+
+(0.04/80)*(min_dat/med_dat)*(8.65/2.95)*(10^(-2))
+
 
 
 
 import Plots
 
 Plots.plot(-15:15,plotdat,seriestype=:scatter)
-
-
-
-import DelimitedFiles
-
-cd(home)
-
-pm_dat = DelimitedFiles.readdlm("Power_Meter_Low.txt")
 
 
 plotdat[1:2:15]

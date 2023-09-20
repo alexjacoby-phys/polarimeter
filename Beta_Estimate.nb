@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[    128505,       2258]
-NotebookOptionsPosition[    127502,       2234]
-NotebookOutlinePosition[    127902,       2250]
-CellTagsIndexPosition[    127859,       2247]
+NotebookDataLength[    131413,       2314]
+NotebookOptionsPosition[    130015,       2286]
+NotebookOutlinePosition[    130415,       2302]
+CellTagsIndexPosition[    130372,       2299]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -166,8 +166,7 @@ Cell[BoxData[
    3.903993234404883*^9}, 3.9039932835987177`*^9, {3.903993381146447*^9, 
    3.9039933853431873`*^9}, 3.903996378440016*^9, {3.90399659778364*^9, 
    3.9039966379230824`*^9}},
- CellLabel->
-  "In[1384]:=",ExpressionUUID->"a12505f9-a44e-40e6-9959-5f2e393976d6"],
+ CellLabel->"In[86]:=",ExpressionUUID->"a12505f9-a44e-40e6-9959-5f2e393976d6"],
 
 Cell[BoxData[
  RowBox[{
@@ -182,7 +181,7 @@ Cell[BoxData[
    3.9039891315884027`*^9}, {3.903989163746117*^9, 3.9039891759321203`*^9}, {
    3.9039900177294483`*^9, 3.903990026593446*^9}, 3.903992786027563*^9},
  CellLabel->
-  "In[1404]:=",ExpressionUUID->"2675eac3-7dcd-4acf-8c47-3c751d555a32"],
+  "In[106]:=",ExpressionUUID->"2675eac3-7dcd-4acf-8c47-3c751d555a32"],
 
 Cell[CellGroupData[{
 
@@ -2224,7 +2223,60 @@ Cell[BoxData[
  CellChangeTimes->{{3.9039933032217216`*^9, 3.903993332631115*^9}, 
    3.903993397627047*^9, 3.903996408140655*^9, 3.903996555715789*^9},
  CellLabel->
-  "Out[1360]=",ExpressionUUID->"6e0d532c-d26b-4670-a044-4e93f8218766"]
+  "Out[1360]=",ExpressionUUID->"6e0d532c-d26b-4670-a044-4e93f8218766"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Part", "partd", 
+   "\"Part specification \\!\\(\\*RowBox[{RowBox[{\\\"(\\\", \
+RowBox[{\\\"wedge\\\", \\\".\\\", RowBox[{\\\"{\\\", \
+RowBox[{RowBox[{\\\"{\\\", FractionBox[\\\"1\\\", SqrtBox[\\\"2\\\"]], \
+\\\"}\\\"}], \\\",\\\", RowBox[{\\\"{\\\", FractionBox[\\\"1\\\", \
+SqrtBox[\\\"2\\\"]], \\\"}\\\"}]}], \\\"}\\\"}]}], \\\")\\\"}], \\\"\
+\[LeftDoubleBracket]\\\", RowBox[{\\\"1\\\", \\\",\\\", \\\"1\\\"}], \\\"\
+\[RightDoubleBracket]\\\"}]\\) is longer than depth of object.\"", 2, 106, 1, 
+   17112463209297018224, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.90415024745927*^9},
+ CellLabel->"",ExpressionUUID->"80d8ded9-f681-4732-aab4-4a29ee59e79f"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Part", "partd", 
+   "\"Part specification \\!\\(\\*RowBox[{RowBox[{\\\"(\\\", \
+RowBox[{\\\"wedge\\\", \\\".\\\", RowBox[{\\\"{\\\", \
+RowBox[{RowBox[{\\\"{\\\", \\\"0.7071067811865475`\\\", \\\"}\\\"}], \
+\\\",\\\", RowBox[{\\\"{\\\", \\\"0.7071067811865475`\\\", \\\"}\\\"}]}], \
+\\\"}\\\"}]}], \\\")\\\"}], \\\"\[LeftDoubleBracket]\\\", RowBox[{\\\"1\\\", \
+\\\",\\\", \\\"1\\\"}], \\\"\[RightDoubleBracket]\\\"}]\\) is longer than \
+depth of object.\"", 2, 106, 2, 17112463209297018224, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.904150247495799*^9},
+ CellLabel->"",ExpressionUUID->"e59eb1dc-d501-4375-90d7-046ceb5e1b59"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Part", "partd", 
+   "\"Part specification \\!\\(\\*RowBox[{RowBox[{\\\"(\\\", \
+RowBox[{\\\"wedge\\\", \\\".\\\", RowBox[{\\\"{\\\", \
+RowBox[{RowBox[{\\\"{\\\", \\\"0.7071067811865475`\\\", \\\"}\\\"}], \
+\\\",\\\", RowBox[{\\\"{\\\", \\\"0.7071067811865475`\\\", \\\"}\\\"}]}], \
+\\\"}\\\"}]}], \\\")\\\"}], \\\"\[LeftDoubleBracket]\\\", RowBox[{\\\"1\\\", \
+\\\",\\\", \\\"1\\\"}], \\\"\[RightDoubleBracket]\\\"}]\\) is longer than \
+depth of object.\"", 2, 106, 3, 17112463209297018224, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.904150247533565*^9},
+ CellLabel->"",ExpressionUUID->"386fbea6-e036-40df-9aee-5eb10d3089d1"],
+
+Cell[BoxData[
+ TemplateBox[{
+  "General", "stop", 
+   "\"Further output of \\!\\(\\*StyleBox[RowBox[{\\\"Part\\\", \\\"::\\\", \
+\\\"partd\\\"}], \\\"MessageName\\\"]\\) will be suppressed during this \
+calculation.\"", 2, 106, 4, 17112463209297018224, "Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.904150247585822*^9},
+ CellLabel->"",ExpressionUUID->"10b2c996-e2d5-437a-9fc1-183037fa35d9"]
 }, Open  ]],
 
 Cell[BoxData[""], "Input",
@@ -2249,17 +2301,21 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 6097, 149, 715, "Input",ExpressionUUID->"a12505f9-a44e-40e6-9959-5f2e393976d6"],
-Cell[6658, 171, 696, 13, 30, "Input",ExpressionUUID->"2675eac3-7dcd-4acf-8c47-3c751d555a32"],
+Cell[558, 20, 6092, 148, 715, "Input",ExpressionUUID->"a12505f9-a44e-40e6-9959-5f2e393976d6"],
+Cell[6653, 170, 695, 13, 30, "Input",ExpressionUUID->"2675eac3-7dcd-4acf-8c47-3c751d555a32"],
 Cell[CellGroupData[{
-Cell[7379, 188, 572, 15, 30, "Input",ExpressionUUID->"91929323-9289-41e0-9015-e498b0108d56"],
-Cell[7954, 205, 116315, 1951, 255, "Output",ExpressionUUID->"96eb5c00-06d1-4d14-a632-98cb840651e1"]
+Cell[7373, 187, 572, 15, 30, "Input",ExpressionUUID->"91929323-9289-41e0-9015-e498b0108d56"],
+Cell[7948, 204, 116315, 1951, 264, "Output",ExpressionUUID->"96eb5c00-06d1-4d14-a632-98cb840651e1"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[124306, 2161, 1198, 25, 30, "Input",ExpressionUUID->"64746ef4-3d48-4795-bbb9-fbb850278dcf"],
-Cell[125507, 2188, 1822, 38, 470, "Output",ExpressionUUID->"6e0d532c-d26b-4670-a044-4e93f8218766"]
+Cell[124300, 2160, 1198, 25, 30, "Input",ExpressionUUID->"64746ef4-3d48-4795-bbb9-fbb850278dcf"],
+Cell[125501, 2187, 1822, 38, 456, "Output",ExpressionUUID->"6e0d532c-d26b-4670-a044-4e93f8218766"],
+Cell[127326, 2227, 719, 13, 46, "Message",ExpressionUUID->"80d8ded9-f681-4732-aab4-4a29ee59e79f"],
+Cell[128048, 2242, 686, 12, 28, "Message",ExpressionUUID->"e59eb1dc-d501-4375-90d7-046ceb5e1b59"],
+Cell[128737, 2256, 686, 12, 28, "Message",ExpressionUUID->"386fbea6-e036-40df-9aee-5eb10d3089d1"],
+Cell[129426, 2270, 416, 8, 28, "Message",ExpressionUUID->"10b2c996-e2d5-437a-9fc1-183037fa35d9"]
 }, Open  ]],
-Cell[127344, 2229, 154, 3, 30, "Input",ExpressionUUID->"69b23bb9-31b3-417e-80fa-8672f19deb23"]
+Cell[129857, 2281, 154, 3, 30, "Input",ExpressionUUID->"69b23bb9-31b3-417e-80fa-8672f19deb23"]
 }
 ]
 *)
