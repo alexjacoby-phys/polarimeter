@@ -8,8 +8,16 @@ end
 
 
 
-fn = string("early_test_data/", "1f_test.png")
-raw_image = Images.Gray.(Images.load(fn))
+
+
+
+
+
+
+
+
+fn = "+4.png"
+raw_image = Images.Gray.(Images.load(fn))[100:900, 300:1300];
 dat = Float64.(raw_image)
 (N, M) = size(dat)
 
@@ -22,20 +30,29 @@ dat = dat - ones(Float64, size(dat)...) * sum(dat) / *(size(dat)...)
 
 
 
-guess_angle = (pi/180)* 105
-fringes = 3
-δfringe = 3
+# guess_angle = -(pi / 180) * 45
+# fringes = 5
+# δfringe = 2
+# resolution = 0.01
+
+# N_X_MAX = abs((fringes+δfringe)*cos(guess_angle))
+# N_Y_MAX = abs((fringes + δfringe) * sin(guess_angle))
+# N_X_MIN = abs((fringes - δfringe) * cos(guess_angle))
+# N_Y_MIN = abs((fringes - δfringe) * sin(guess_angle))
+
+
+#1f
+N_X_MAX = 4.1
+N_X_MIN = 2.2
+N_Y_MAX = 3.15
+N_Y_MIN = 1.3
 resolution = 0.001
-
-N_X_MAX = abs((fringes+δfringe)*cos(guess_angle))
-N_Y_MAX = abs((fringes + δfringe) * sin(guess_angle))
-N_X_MIN = abs((fringes - δfringe) * cos(guess_angle))
-N_Y_MIN = abs((fringes - δfringe) * sin(guess_angle))
-
-
-
-
-
+# #2f
+# N_X_MAX = 8.2
+# N_X_MIN = 4.4
+# N_Y_MAX = 6.3
+# N_Y_MIN = 2.6
+# resolution = 0.01
 
 
 # K_X = Vector{Float64}(2 * pi * (-5:0.001:5) / M)
@@ -56,9 +73,9 @@ pFTR = exp.(-im * [i * j for i in 1:M, j in K_X])
 pftdat = abs.(pFTL * dat * pFTR)
 # A = max(pftdat...)
 # pftdat = pftdat*(1/A)
-downsampled = pftdat[1:10:size(pftdat)[1],1:10:size(pftdat)[2]]
-downsampled = downsampled/max(downsampled...)
-Images.Gray.(downsampled)
+# downsampled = pftdat[1:10:size(pftdat)[1], 1:10:size(pftdat)[2]]
+# downsampled = downsampled / max(downsampled...)
+# Images.Gray.(downsampled);
 
 
 
@@ -67,11 +84,17 @@ Images.Gray.(downsampled)
 (kx, ky) = (K_X[xmax], K_Y[ymax])
 
 
+ϕ = atan(ky, kx)
+ϕ = mod(ϕ + π / 2, π) - π / 2
+ϕ_deg = ϕ * (180 / pi)
+
+
+
 import Plots
 
 
-kx_peak = pftdat[ymax, :] 
-ky_peak = pftdat[:,xmax] 
+kx_peak = pftdat[ymax, :]
+ky_peak = pftdat[:, xmax]
 
 
 FWHMX_vec = abs.(pftdat[ymax, :] .- 0.5 * pftdat[ymax, xmax])
@@ -89,7 +112,7 @@ FWHMY_vec = abs.(pftdat[:, xmax] .- 0.5 * pftdat[ymax, xmax])
 
 
 FWHMXL = findmin(FWHMX_vec[1:xmax])[2]
-FWHMXG = findmin(FWHMX_vec[xmax:length(FWHMX_vec)])[2]+xmax-1
+FWHMXG = findmin(FWHMX_vec[xmax:length(FWHMX_vec)])[2] + xmax - 1
 #+xmax-1 for FWHM-G
 
 
@@ -98,23 +121,17 @@ FWHMYG = findmin(FWHMY_vec[ymax:length(FWHMY_vec)])[2] + ymax - 1
 
 
 FWHMX = abs(K_X[FWHMXG] - K_X[FWHMXL])
-FWHMY = abs(K_Y[FWHMYG]-K_Y[FWHMYL])
-
-
-
-ϕ = atan(ky, kx)
-ϕ_deg = ϕ * (180 / pi)
-ϕ = mod(ϕ+π/2,π) - π/2
-
-
-
-
-δϕ_mat = 
-# import ImageTransformations
-
-# ImageTransformations.imrotate(raw_image, -ϕ)
+FWHMY = abs(K_Y[FWHMYG] - K_Y[FWHMYL])
 
 
 
 
 
+
+import ImageTransformations
+
+
+
+
+
+ImageTransformations.imrotate(raw_image, -ϕ)
