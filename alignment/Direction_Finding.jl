@@ -141,7 +141,7 @@ end
 
 
 fn = dat2
-raw_image = Images.Gray.(Images.load(fn))[100:900, 300:1300];
+raw_image = Images.Gray.(Images.load(fn))[100:900, 300:1300]
 dat = Float64.(raw_image)
 (N, M) = size(dat)
 

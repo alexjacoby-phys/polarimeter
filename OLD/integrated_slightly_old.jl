@@ -1,57 +1,32 @@
-import Images, FileIO, LinearAlgebra
+import LinearAlgebra, Images, FileIO, ImageTransformations
+#note that this interpolator must be imported as "using" not the more conventional "import." Some annoying stack of function dependencies happening.
+using Interpolations
+
+
+
 function rescale(x::Float64; α::Float64=1.0)
     return (exp(α * x) - 1) / (exp(α) - 1)
 end
 
 
-#fn_end = Base.prompt("Please Enter File Extension Under 'Data' Folder")
 
 
-fn = "+4.png"
-raw_image = Images.Gray.(Images.load(fn))[100:900, 300:1300];
+
+
+fn = string("early_test_data/", "1f_test.png")
+raw_image = Images.Gray.(Images.load(fn));
 dat = Float64.(raw_image)
 (N, M) = size(dat)
 
-#dat = [0.5*(1+cos((i+j)/100)) for i in 1:1080, j in 1:1440]
+
 
 
 dat = dat - ones(Float64, size(dat)...) * sum(dat) / *(size(dat)...)
 
-#This is the automatic version of this program. I don't recommend using it if your peaks are at all broad, or you can be very generous with δfringe if you do. It is advisable to do a coarse grained run with resolution at something like 0.01 and then a fine grained run at 0.001 or higher depending on the size of the peaks.
 
 
-
-# guess_angle = -(pi / 180) * 45
-# fringes = 5
-# δfringe = 2
-# resolution = 0.01
-
-# N_X_MAX = abs((fringes+δfringe)*cos(guess_angle))
-# N_Y_MAX = abs((fringes + δfringe) * sin(guess_angle))
-# N_X_MIN = abs((fringes - δfringe) * cos(guess_angle))
-# N_Y_MIN = abs((fringes - δfringe) * sin(guess_angle))
-
-
-#1f
-N_X_MAX = 4.1
-N_X_MIN = 2.2
-N_Y_MAX = 3.15
-N_Y_MIN = 1.3
-resolution = 0.001
-# #2f
-# N_X_MAX = 8.2
-# N_X_MIN = 4.4
-# N_Y_MAX = 6.3
-# N_Y_MIN = 2.6
-# resolution = 0.01
-
-
-# K_X = Vector{Float64}(2 * pi * (-5:0.001:5) / M)
-# K_Y = Vector{Float64}(2 * pi * (-5:0.001:5) / N)
-
-
-K_X = vcat(Vector{Float64}(2 * pi * (-N_X_MAX:0.001:-N_X_MIN) / M), Vector{Float64}(2 * pi * (N_X_MIN:0.001:N_X_MAX) / M))
-K_Y = vcat(Vector{Float64}(2 * pi * (-N_Y_MAX:0.001:-N_Y_MIN) / N), Vector{Float64}(2 * pi * (N_Y_MIN:0.001:N_Y_MAX) / N))
+K_X = 2 * pi * (-5:0.001:5) / M
+K_Y = 2 * pi * (-5:0.001:5) / N
 
 
 pFTL = exp.(-im * [i * j for i in K_Y, j in 1:N])
@@ -62,11 +37,6 @@ pFTR = exp.(-im * [i * j for i in 1:M, j in K_X])
 
 
 pftdat = abs.(pFTL * dat * pFTR)
-A = max(pftdat...)
-pftdat = pftdat*(1/A)
-downsampled = pftdat[1:10:size(pftdat)[1], 1:10:size(pftdat)[2]]
-downsampled = downsampled / max(downsampled...)
-Images.Gray.(downsampled)
 
 
 
@@ -77,49 +47,6 @@ Images.Gray.(downsampled)
 
 ϕ = atan(ky, kx)
 ϕ = mod(ϕ + π / 2, π) - π / 2
-ϕ_deg = ϕ * (180 / pi)
-
-
-
-import Plots
-
-
-kx_peak = pftdat[ymax, :]
-ky_peak = pftdat[:, xmax]
-
-
-FWHMX_vec = abs.(pftdat[ymax, :] .- 0.5 * pftdat[ymax, xmax])
-FWHMY_vec = abs.(pftdat[:, xmax] .- 0.5 * pftdat[ymax, xmax])
-
-
-
-# Plots.plot(K_X, kx_peak)
-# Plots.plot(K_Y,ky_peak)
-
-# Plots.plot(K_X, FWHMX_vec)
-# Plots.plot(K_Y, FWHMY_vec)
-
-
-
-
-FWHMXL = findmin(FWHMX_vec[1:xmax])[2]
-FWHMXG = findmin(FWHMX_vec[xmax:length(FWHMX_vec)])[2] + xmax - 1
-#+xmax-1 for FWHM-G
-
-
-FWHMYL = findmin(FWHMY_vec[1:ymax])[2]
-FWHMYG = findmin(FWHMY_vec[ymax:length(FWHMY_vec)])[2] + ymax - 1
-
-
-FWHMX = abs(K_X[FWHMXG] - K_X[FWHMXL])
-FWHMY = abs(K_Y[FWHMYG] - K_Y[FWHMYL])
-
-
-
-
-
-
-import ImageTransformations
 
 
 
@@ -133,15 +60,10 @@ ImageTransformations.imrotate(raw_image, -ϕ)
 
 
 
-
 # this sets the number of paritions for the one dimensional sample. Must be integer valued
 itp = Interpolations.interpolate(dat, BSpline(Cubic(Line(OnGrid()))))
-# how many data points will be on the x axis of the final one dimensional graph
 no_partitions = 1000
-#how much of a pixel should separate different sample locations in the average along constant phase lines (this should be less than or equal to one. Probably less is better.)
-pixel_fraction = 1.
-
-n1 = [cos(ϕ), -sin(ϕ)] *(pixel_fraction)
+n1 = [cos(ϕ), -sin(ϕ)]
 
 
 
@@ -278,12 +200,8 @@ LY = N
 plotdat1 = take_avg_of_slice.(avgpoints1; normal=n1, dat_itp=itp)
 plotdat2 = take_avg_of_slice.(avgpoints2; normal=n1, dat_itp=itp)
 
-dists2
 
-x = vcat(reverse(dists2),dists1[2:length(dists1)])
-y = vcat(reverse(plotdat2),plotdat1[2:length(plotdat1)])
 
-Plots.plot(x,y)
 
 
 
@@ -295,11 +213,6 @@ Plots.plot!(dists2,plotdat2)
 
 
 Plots.savefig("")
-
-
-import DelimitedFiles
-DelimitedFiles.writedlm("+4.txt",[x,y])
-
 
 #LinearAlgebra.dot((c1 - ap10),n1) #good to convince yourself these are orthogonal (for default orientation = \phi positive)
 #LinearAlgebra.dot((c4 - bp10),n1) #good to convince yourself these are orthogonal (for non-default orientation = \phi negative)
