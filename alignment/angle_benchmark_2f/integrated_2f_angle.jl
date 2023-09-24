@@ -1,4 +1,4 @@
-import Images, FileIO, LinearAlgebra
+import Images, FileIO, LinearAlgebra, Interpolations
 function rescale(x::Float64; α::Float64=1.0)
     return (exp(α * x) - 1) / (exp(α) - 1)
 end
@@ -7,77 +7,89 @@ end
 #fn_end = Base.prompt("Please Enter File Extension Under 'Data' Folder")
 
 
-fn = "angle_benchmark/+4.png"
-raw_image = Images.Gray.(Images.load(fn))[100:900, 300:1300]
-dat = Float64.(raw_image)
-(N, M) = size(dat)
+fn = "0.png"
+begin
+    raw_image = Images.Gray.(Images.load(fn))[100:900, 300:1300];
+    dat = Float64.(raw_image)
+    (N, M) = size(dat)
 
-#dat = [0.5*(1+cos((i+j)/100)) for i in 1:1080, j in 1:1440]
-
-
-dat = dat - ones(Float64, size(dat)...) * sum(dat) / *(size(dat)...)
-
-#This is the automatic version of this program. I don't recommend using it if your peaks are at all broad, or you can be very generous with δfringe if you do. It is advisable to do a coarse grained run with resolution at something like 0.01 and then a fine grained run at 0.001 or higher depending on the size of the peaks.
+    #dat = [0.5*(1+cos((i+j)/100)) for i in 1:1080, j in 1:1440]
 
 
+    dat = dat - ones(Float64, size(dat)...) * sum(dat) / *(size(dat)...)
 
-# guess_angle = -(pi / 180) * 45
-# fringes = 5
-# δfringe = 2
-# resolution = 0.01
-
-# N_X_MAX = abs((fringes+δfringe)*cos(guess_angle))
-# N_Y_MAX = abs((fringes + δfringe) * sin(guess_angle))
-# N_X_MIN = abs((fringes - δfringe) * cos(guess_angle))
-# N_Y_MIN = abs((fringes - δfringe) * sin(guess_angle))
-
-
-#1f
-N_X_MAX = 4.1
-N_X_MIN = 2.2
-N_Y_MAX = 3.15
-N_Y_MIN = 1.3
-resolution = 0.001
-# #2f
-# N_X_MAX = 8.2
-# N_X_MIN = 4.4
-# N_Y_MAX = 6.3
-# N_Y_MIN = 2.6
-# resolution = 0.01
-
-
-# K_X = Vector{Float64}(2 * pi * (-5:0.001:5) / M)
-# K_Y = Vector{Float64}(2 * pi * (-5:0.001:5) / N)
-
-
-K_X = vcat(Vector{Float64}(2 * pi * (-N_X_MAX:0.001:-N_X_MIN) / M), Vector{Float64}(2 * pi * (N_X_MIN:0.001:N_X_MAX) / M))
-K_Y = vcat(Vector{Float64}(2 * pi * (-N_Y_MAX:0.001:-N_Y_MIN) / N), Vector{Float64}(2 * pi * (N_Y_MIN:0.001:N_Y_MAX) / N))
-
-
-pFTL = exp.(-im * [i * j for i in K_Y, j in 1:N])
-
-pFTR = exp.(-im * [i * j for i in 1:M, j in K_X])
+    #This is the automatic version of this program. I don't recommend using it if your peaks are at all broad, or you can be very generous with δfringe if you do. It is advisable to do a coarse grained run with resolution at something like 0.01 and then a fine grained run at 0.001 or higher depending on the size of the peaks.
 
 
 
+    # guess_angle = -(pi / 180) * 45
+    # fringes = 5
+    # δfringe = 2
+    # resolution = 0.01
 
-pftdat = abs.(pFTL * dat * pFTR)
-A = max(pftdat...)
-pftdat = pftdat*(1/A)
-downsampled = pftdat[1:10:size(pftdat)[1], 1:10:size(pftdat)[2]]
-downsampled = downsampled / max(downsampled...)
-Images.Gray.(downsampled)
+    # N_X_MAX = abs((fringes+δfringe)*cos(guess_angle))
+    # N_Y_MAX = abs((fringes + δfringe) * sin(guess_angle))
+    # N_X_MIN = abs((fringes - δfringe) * cos(guess_angle))
+    # N_Y_MIN = abs((fringes - δfringe) * sin(guess_angle))
+
+
+    #1f
+    N_X_MAX = 5
+    N_X_MIN = 3
+    N_Y_MAX = 2
+    N_Y_MIN = 0.2
+    resolution = 0.001
+    # #2f
+    # N_X_MAX = 8.2
+    # N_X_MIN = 4.4
+    # N_Y_MAX = 6.3
+    # N_Y_MIN = 2.6
+    # resolution = 0.01
+
+
+    # K_X = Vector{Float64}(2 * pi * (-5:0.001:5) / M)
+    # K_Y = Vector{Float64}(2 * pi * (-5:0.001:5) / N)
+
+
+    K_X = vcat(Vector{Float64}(2 * pi * (-N_X_MAX:resolution:-N_X_MIN) / M), Vector{Float64}(2 * pi * (N_X_MIN:resolution:N_X_MAX) / M))
+    K_Y = vcat(Vector{Float64}(2 * pi * (-N_Y_MAX:resolution:-N_Y_MIN) / N), Vector{Float64}(2 * pi * (N_Y_MIN:resolution:N_Y_MAX) / N))
+
+
+    pFTL = exp.(-im * [i * j for i in K_Y, j in 1:N])
+
+    pFTR = exp.(-im * [i * j for i in 1:M, j in K_X])
 
 
 
 
-(ymax, xmax) = Tuple(findmax(pftdat)[2])
-(kx, ky) = (K_X[xmax], K_Y[ymax])
+    pftdat = abs.(pFTL * dat * pFTR)
+    # A = max(pftdat...)
+    # pftdat = pftdat*(1/A)
+    # downsampled = pftdat[1:10:size(pftdat)[1], 1:10:size(pftdat)[2]]
+    # downsampled = downsampled / max(downsampled...)
+    # Images.Gray.(downsampled)
 
 
-ϕ = atan(ky, kx)
-ϕ = mod(ϕ + π / 2, π) - π / 2
+
+
+    (ymax, xmax) = Tuple(findmax(pftdat)[2])
+    (kx, ky) = (K_X[xmax], K_Y[ymax])
+
+
+    ϕ = atan(ky, kx)
+    ϕ = mod(ϕ + π / 2, π) - π / 2
+end
 ϕ_deg = ϕ * (180 / pi)
+
+import ImageTransformations
+
+
+
+
+
+ImageTransformations.imrotate(raw_image, -ϕ)
+
+
 
 
 
@@ -119,13 +131,6 @@ FWHMY = abs(K_Y[FWHMYG] - K_Y[FWHMYL])
 
 
 
-import ImageTransformations
-
-
-
-
-
-ImageTransformations.imrotate(raw_image, -ϕ)
 
 
 
@@ -133,13 +138,13 @@ ImageTransformations.imrotate(raw_image, -ϕ)
 
 
 
-
+using Interpolations
 # this sets the number of paritions for the one dimensional sample. Must be integer valued
 itp = Interpolations.interpolate(dat, BSpline(Cubic(Line(OnGrid()))))
 # how many data points will be on the x axis of the final one dimensional graph
-no_partitions = 1000
+no_partitions = 10000
 #how much of a pixel should separate different sample locations in the average along constant phase lines (this should be less than or equal to one. Probably less is better.)
-pixel_fraction = 1.
+pixel_fraction = 0.5
 
 n1 = [cos(ϕ), -sin(ϕ)] *(pixel_fraction)
 
@@ -283,7 +288,7 @@ dists2
 x = vcat(reverse(dists2),dists1[2:length(dists1)])
 y = vcat(reverse(plotdat2),plotdat1[2:length(plotdat1)])
 
-Plots.plot(x,y,legend = :none)
+Plots.plot(x,y)
 
 
 
@@ -298,7 +303,7 @@ Plots.savefig("")
 
 
 import DelimitedFiles
-DelimitedFiles.writedlm("+4.txt",[x,y])
+DelimitedFiles.writedlm("0_2f.txt",[x,y])
 
 
 #LinearAlgebra.dot((c1 - ap10),n1) #good to convince yourself these are orthogonal (for default orientation = \phi positive)
@@ -311,15 +316,14 @@ DelimitedFiles.writedlm("+4.txt",[x,y])
 
 
 #this will make a really good figure for the writeup
-avgpoints1_x = [val[2] for val in avgpoints1]
-avgpoints1_y = [val[1] for val in avgpoints1]
-avgpoints2_x = [val[2] for val in avgpoints2]
-avgpoints2_y = [val[1] for val in avgpoints2]
+# avgpoints1_x = [val[2] for val in avgpoints1]
+# avgpoints1_y = [val[1] for val in avgpoints1]
+# avgpoints2_x = [val[2] for val in avgpoints2]
+# avgpoints2_y = [val[1] for val in avgpoints2]
 
-Plots.plot(Images.Gray.(dat));
-Plots.plot!(avgpoints1_x, avgpoints1_y);
-Plots.plot!(avgpoints2_x, avgpoints2_y, legend = :none)
-
+# Plots.plot(Images.Gray.(dat));
+# Plots.plot!(avgpoints1_x, avgpoints1_y);
+# Plots.plot!(avgpoints2_x, avgpoints2_y, legend = :none)
 
 
 
