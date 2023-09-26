@@ -270,9 +270,9 @@ Plots.plot(ϕ_vec)
 
 
 
-small_fn = 10
+small_fn = 7
 
-fn = string("//Volumes/AJACOBY/beta_measurement/troughs/+", small_fn)
+fn = string("beta_measurement/troughs/+", small_fn)
 
 raw_image = Images.Gray.(Images.load(string(fn, ".png")))[100:900, 300:1300];
 dat = Float64.(raw_image)

@@ -10,8 +10,8 @@ end
 
 ϕ_vec = Vector{Float64}([])
 
-for small_fn in 11:20
-    fn = string("//Volumes/AJACOBY/beta_measurement/peaks/-",small_fn)
+for small_fn in 1:20
+    fn = string("beta_measurement/peaks/-",small_fn)
 
     raw_image = Images.Gray.(Images.load(string(fn,".png")))[100:900, 300:1300];
     dat = Float64.(raw_image)
@@ -225,9 +225,9 @@ for small_fn in 11:20
 
     x = vcat(reverse(dists2),dists1[2:length(dists1)])
     y = vcat(reverse(plotdat2),plotdat1[2:length(plotdat1)])
-    DelimitedFiles.writedlm(string(fn, ".txt"), [x, y])
+    #DelimitedFiles.writedlm(string(fn, ".txt"), [x, y])
 end
-
+ϕ_vec
 
 Plots.plot(ϕ_vec)
 # import Plots
@@ -272,9 +272,9 @@ Plots.plot(ϕ_vec)
 
 
 
-small_fn = 12
+small_fn =8
 
-fn = string("//Volumes/AJACOBY/beta_measurement/peaks/-", small_fn)
+fn = string("beta_measurement/peaks/-", small_fn)
 
 raw_image = Images.Gray.(Images.load(string(fn, ".png")))[100:900, 300:1300];
 dat = Float64.(raw_image)
