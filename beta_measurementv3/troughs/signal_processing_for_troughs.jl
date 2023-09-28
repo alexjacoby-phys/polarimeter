@@ -27,7 +27,7 @@ for (k,number) in  pairs(small_fn_vec)
 
 
 
-    x = dat[1, :] / max(abs.(dat[1, :])...)
+    x = (dat[1, :] / max(abs.(dat[1, :])...))
     y = dat[2, :]
 
     x = x[500:1500]
@@ -100,8 +100,8 @@ Plots.plot(ϕ_vec, parameter_bank1[:, 5] .- 2*parameter_bank1[:, 4])
 Plots.plot!(ϕ_vec,error_bank1[:,4]);
 Plots.plot!(ϕ_vec, error_bank1[:, 5])
 
-
-
+findmin(abs.(parameter_bank1[:, 5] .- 2*parameter_bank1[:, 4]))
+ϕ_vec[21]
 
 
 
@@ -128,7 +128,7 @@ Plots.plot!(ϕ_vec, error_bank1[:, 5])
 
 
 
-number = string("-",2)
+number = string("-",8)
 fn = string("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv3/troughs/", number, ".txt")
 
 
@@ -139,8 +139,8 @@ dat = DelimitedFiles.readdlm(fn)
 
 x = dat[1, :] / max(abs.(dat[1, :])...)
 y = dat[2, :]
-x = x[500:1500]
-y = y[500:1500]
+x = x#[500:1500]
+y = y#[500:1500]
 
 analytic_y_fourier = FFTW.fft(FourierAnalysis.hilbert(y))
 
@@ -197,7 +197,7 @@ LsqFit.estimate_errors(fitting2)
 
 Plots.plot(x, real.(first_y + second_y), linedwidth=2, label="Fourier Filtered", fontfamily=:Times);
 Plots.plot!(x, model(x, fitting1.param), linewidth=2, label="Fitted")
-#Plots.savefig("Fourier_Filtered.pdf")
+Plots.savefig("Troughs_Fourier_Filtered_Full_Data.pdf")
 
 
 
@@ -205,7 +205,7 @@ Plots.plot!(x, model(x, fitting1.param), linewidth=2, label="Fitted")
 Plots.plot(x, real.(y1 + y2), label="Filtered + Evelope", linewidth=2, fontfamily=:Times);
 Plots.plot!(x, model(x, fitting2.param), label="Fitted", linewidth=2)
 
-#Plots.savefig("FilterandEnv.pdf")
+Plots.savefig("Troughs_FilterandEnv_Full_Data.pdf")
 
 
 Plots.plot(x, first_envelope, linewidth=2, legend=:none, fontfamily=:Times)
