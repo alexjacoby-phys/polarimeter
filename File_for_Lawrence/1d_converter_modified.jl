@@ -57,6 +57,13 @@ Images.Gray.(downsampled)
 (kx, ky) = (K_X[xmax], K_Y[ymax])
 
 
+
+
+
+
+
+
+
 ϕ = atan(ky, kx)
 ϕ = mod(ϕ + π / 2, π) - π / 2
 ϕ_deg = ϕ * (180 / pi)
@@ -64,12 +71,11 @@ Images.Gray.(downsampled)
 
 
 θ = mod(ϕ +pi, pi) - pi/2
-# import ImageTransformations
+import ImageTransformations
 
 
-# ImageTransformations.imrotate(raw_image, -ϕ)
-
-
+ImageTransformations.imrotate(raw_image, -ϕ-pi/2)
+ϕ_deg + 90
 
 
 
@@ -217,13 +223,18 @@ begin
 end
 
 
+LX = M
+LY = N
+((avgpoints1, dists1), (avgpoints2, dists2)) = avgpoints(no_partitions, ϕ; LX=Float64(M), LY=Float64(N))
+plotdat1 = take_avg_of_slice.(avgpoints1; normal=n1, dat_itp=itp)
+plotdat2 = take_avg_of_slice.(avgpoints2; normal=n1, dat_itp=itp)
+x = vcat(reverse(dists2), dists1[2:length(dists1)])
+y = vcat(reverse(plotdat2), plotdat1[2:length(plotdat1)])
 
+import Plots
 
-
-
-
-
-
+Plots.plot(x, y)
+DelimitedFiles.writedlm(string(fn, ".txt"), [x, y])
 
 
 

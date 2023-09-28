@@ -113,7 +113,7 @@ Plots.plot!(x, abs.(real.(y1 + y2) - model(x, fitting.param)))
 
 
 
-number = "-19"
+number = "-16"
 
 fn = string("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv2/1fv2/", number, ".txt")
 begin
@@ -168,24 +168,43 @@ parms0 = [5.5 * pi, 0.2, 0.01, 0.0, 0.0]
 
 
 
-fitting = LsqFit.curve_fit(model, x, real.(first_y + second_y), parms0)
-result1 = fitting.param
+fitting1 = LsqFit.curve_fit(model, x, real.(first_y + second_y), parms0)
+result1 = fitting1.param
+result1
 
 
-result1[3]
-append!(list1, abs(result1[3]))
 
-fitting = LsqFit.curve_fit(model, x, real.(y1 + y2), parms0)
-result2 = fitting.param
+fitting2 = LsqFit.curve_fit(model, x, real.(y1 + y2), parms0)
+result2 = fitting2.param
 
 
-result2[3]
-append!(list2, abs(result2[3]))
+LsqFit.estimate_errors(fitting1)
+LsqFit.estimate_errors(fitting2)
 
 
-Plots.plot(x, model(x, fitting.param));
-Plots.plot!(x, real.(first_y + second_y));
-Plots.plot!(x, real.(y1 + y2))
+
+Plots.plot(x, real.(first_y + second_y), linedwidth = 2, label = "Fourier Filtered",fontfamily = :Times);
+Plots.plot!(x, model(x, fitting1.param), linewidth=2, label="Fitted")
+Plots.savefig("Fourier_Filtered.pdf")
+
+Plots.savefig()
+
+
+Plots.plot(x, real.(y1 + y2), label="Filtered + Evelope",linewidth = 2,fontfamily = :Times);
+Plots.plot!(x, model(x, fitting2.param), label="Fitted", linewidth=2)
+
+Plots.savefig("FilterandEnv.pdf")
+
+
+Plots.plot(x,first_envelope,linewidth= 2,legend = :none,fontfamily = :Times)
+Plots.plot!(title = "Envelope Function",ylabel = "(Length-Normalized)")
+Plots.savefig("Envelope.pdf")
+
+
+
+
+
+
 
 Plots.plot(x, abs.(real.(first_y + second_y) - model(x, fitting.param)));
 Plots.plot!(x, abs.(real.(y1 + y2) - model(x, fitting.param)))

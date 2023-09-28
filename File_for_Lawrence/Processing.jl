@@ -1,4 +1,4 @@
-import DelimitedFiles, LinearAlgebra, Interpolations, FFTW, FourierAnalysis, Plots
+import DelimitedFiles, LinearAlgebra, Interpolations, FFTW, FourierAnalysis, Plots, LsqFit
 function fermi(E::Number; β::Number, μ::Number)
     return 1 / (exp(β * (E - μ)) + 1)
 end
@@ -12,7 +12,7 @@ list3 = []
 
 
 
-fn = string("/Users/alexjacoby/Documents/Research_Code/polarimeter/File_for_Lawrence/1f_sample.txt")
+fn = string("/Users/alexjacoby/Documents/Research_Code/polarimeter/File_for_Lawrence/1f_full.txt")
 
 dat = DelimitedFiles.readdlm(fn)
 
@@ -64,34 +64,29 @@ parms0 = [5.5 * pi, 0.2, 0.01, 0.0, 0.0]
 
 
 
-fitting = LsqFit.curve_fit(model, x, real.(first_y + second_y), parms0)
-result1 = fitting.param
+fitting1 = LsqFit.curve_fit(model, x, real.(first_y + second_y), parms0)
+result1 = fitting1.param
 
 
-result1[3]
-append!(list1, abs(result1[3]))
 
-fitting = LsqFit.curve_fit(model, x, real.(y1 + y2), parms0)
-result2 = fitting.param
+
+fitting2 = LsqFit.curve_fit(model, x, real.(y1 + y2), parms0)
+result2 = fitting2.param
 
 
 result2[3]
 append!(list2, abs(result2[3]))
 
 
-list1
-list2
-
-
-Plots.plot(list1)
-Plots.plot!(list2)
 
 
 
 
 
-Plots.plot(x, model(x, fitting.param),label = "fitted",linewidth = 2);
+Plots.plot(x, model(x, fitting1.param),label = "fitted",linewidth = 2);
 Plots.plot!(x, real.(first_y + second_y), label = "fourier filtered", linewidth = 2)
+
+Plots.plot(x, model(x, fitting2.param), label="fitted", linewidth=2);
 Plots.plot!(x, real.(y1 + y2))
 
 Plots.savefig("FF_1f_sample+fit.pdf")
