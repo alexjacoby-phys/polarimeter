@@ -30,8 +30,8 @@ for (k, number) in pairs(small_fn_vec)
     x = dat[1, :] / max(abs.(dat[1, :])...)
     y = dat[2, :]
 
-    x = x[500:1500]
-    y = y[500:1500]
+    x = x#[500:1500]
+    y = y#[500:1500]
 
 
     analytic_y_fourier = FFTW.fft(FourierAnalysis.hilbert(y))
@@ -94,16 +94,21 @@ cd("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv3/pea
 
 parameter_bank1[:,4]
 
+findmin(abs.(mod.(parameter_bank1[:, 5] .- 2 * parameter_bank1[:, 4], 2pi) .- pi))
+ϕ_vec[11]
+ϕ_vec[15]
 
 
-Plots.plot(ϕ_vec, mod.(parameter_bank1[:, 5] .- 2*parameter_bank1[:, 4], 2pi));
-Plots.plot!(ϕ_vec, error_bank1[:, 4]);
-Plots.plot!(ϕ_vec, error_bank1[:, 5])
 
 
-Plots.plot(ϕ_vec, mod.(parameter_bank2[:, 4] .- parameter_bank2[:, 5], 2pi));
-Plots.plot!(ϕ_vec, error_bank1[:, 4]);
-Plots.plot!(ϕ_vec, error_bank1[:, 5])
+Plots.plot(ϕ_vec, mod.(parameter_bank1[:, 5] .- 2*parameter_bank1[:, 4], 2pi),label = "Phase Difference", title = "F. Filtered");
+Plots.plot!(ϕ_vec, error_bank1[:, 4], label = "Error in 1f Phase");
+Plots.plot!(ϕ_vec, error_bank1[:, 5], label = "Error in 2f Phase")
+
+
+Plots.plot(ϕ_vec, mod.(parameter_bank1[:, 5] .- 2 * parameter_bank1[:, 4], 2pi), label = "Phase Difference",title="F. Filtered + Env. Corrected");
+Plots.plot!(ϕ_vec, error_bank1[:, 4], label="Error in 1f Phase");
+Plots.plot!(ϕ_vec, error_bank1[:, 5], label="Error in 2f Phase")
 
 
 
@@ -130,7 +135,7 @@ mod.(parameter_bank2[:, 4] .- parameter_bank2[:, 5], 2pi)[25]
 
 
 
-number = string("-", 22)
+number = string("-", 21)
 fn = string("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv3/peaks/", number, ".txt")
 
 
@@ -139,8 +144,8 @@ dat = DelimitedFiles.readdlm(fn)
 
 
 
-x = dat[1, :] / max(abs.(dat[1, :])...)
-y = dat[2, :]
+x = (dat[1, :] / max(abs.(dat[1, :])...))#[500:1500]
+y = dat[2, :]#[500:1500]
 
 
 analytic_y_fourier = FFTW.fft(FourierAnalysis.hilbert(y))
@@ -171,7 +176,7 @@ second_y = FFTW.ifft(analytic_y_fourier .* second_filter)
 y2 = second_y .* (second_envelope .^ (-1))
 #Plots.plot(abs.(analytic_y_fourier .* second_filter)[1:15])
 
-Plots.plot(x, real.(y1 + y2))
+#Plots.plot(x, real.(y1 + y2))
 
 
 
@@ -184,7 +189,7 @@ parms0 = [5.5 * pi, 0.1, 0.1, 0.0, 0.0]
 fitting1 = LsqFit.curve_fit(model, x, real.(first_y + second_y), parms0)
 result1 = fitting1.param
 result1
-
+mod(result1[4],2pi)
 
 
 fitting2 = LsqFit.curve_fit(model, x, real.(y1 + y2), parms0)
@@ -198,7 +203,7 @@ LsqFit.estimate_errors(fitting2)
 
 Plots.plot(x, real.(first_y + second_y), linedwidth=2, label="Fourier Filtered", fontfamily=:Times);
 Plots.plot!(x, model(x, fitting1.param), linewidth=2, label="Fitted")
-#Plots.savefig("Fourier_Filtered.pdf")
+Plots.savefig("Fourier_Filtered_Full_Data.pdf")
 
 
 
@@ -206,7 +211,7 @@ Plots.plot!(x, model(x, fitting1.param), linewidth=2, label="Fitted")
 Plots.plot(x, real.(y1 + y2), label="Filtered + Evelope", linewidth=2, fontfamily=:Times);
 Plots.plot!(x, model(x, fitting2.param), label="Fitted", linewidth=2)
 
-#Plots.savefig("FilterandEnv.pdf")
+Plots.savefig("FilterandEnv_Full_Data.pdf")
 
 
 Plots.plot(x, first_envelope, linewidth=2, legend=:none, fontfamily=:Times)

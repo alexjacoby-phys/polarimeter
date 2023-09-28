@@ -247,7 +247,7 @@ DelimitedFiles.writedlm("angles", ϕ_vec)
 
 
 #extra angle finder
-small_fn = "0"
+small_fn = "-21"
 cd("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv3/peaks")
 fn = string("//Volumes/AJACOBY/beta_measurementv3/peaks/", small_fn)
 
