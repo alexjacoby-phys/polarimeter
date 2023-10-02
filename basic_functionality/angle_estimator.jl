@@ -2,19 +2,19 @@ import LinearAlgebra, OffsetArrays, Images
 
 
 
-# raw_image = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/1f/-1.png"))[280:710, 700:1350];
-# dat = Float64.(raw_image)
-# correction = (Float64.(Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/FFiltered_Background_Low.png"))[280:710, 700:1350])) .^(-1)
-# correction = (*(size(correction)...)/sum(correction)) * correction;
-# dat = dat .* correction
+raw_image = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/1f/-1.png"))[280:710, 700:1350];
+dat = Float64.(raw_image)
+correction = (Float64.(Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/FFiltered_Background_Low.png"))[280:710, 700:1350])) .^(-1)
+correction = (*(size(correction)...)/sum(correction)) * correction;
+dat = dat .* correction
 
-# Images.Gray.(dat);
+Images.Gray.(dat);
 
-# N_X_MIN = 1.5
-# N_X_MAX = 3.5
-# N_Y_MIN = 0
-# N_Y_MAX = 2
-# resolution = 0.001
+N_X_MIN = 1.5
+N_X_MAX = 3.5
+N_Y_MIN = 0
+N_Y_MAX = 2
+resolution = 0.001
 
 
 

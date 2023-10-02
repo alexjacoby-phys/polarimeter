@@ -33,8 +33,9 @@ xval = (PX*tan(-θ)+PY)/(tan(ψ)+abs(tan(θ)))
 R = Int64(floor((PX*tan(-θ)+PY)/(tan(ψ)+abs(tan(θ)))))
 S = Int64(floor(xval*AR))
 
-rotated = OffsetArrays.centered(ImageTransformations.imrotate(raw_image, θ))
-
+rotated = OffsetArrays.centered(ImageTransformations.imrotate(raw_image, θ));
+Plots.plot(rotated);
+Plots.plot!([R, -R, R, -R], [S, S, -S, -S], color=:red, seriestype=:scatter)
 
 
 sample = Float64.(rotated[-S:S,-R:R])
@@ -228,6 +229,13 @@ for θ in θ_vec
     slope = linear_fit.param[1]
     append!(slope_vec, slope)
 end
+
+
+
+final_fit = LsqFit.curve_fit(linear_model, θ_vec,slope_vec, p0)
+final_parms = final_fit.param
+-final_parms[2]/final_parms[1]
+
 
 
 Plots.plot(θ_vec, slope_vec)
