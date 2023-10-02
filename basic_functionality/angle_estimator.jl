@@ -2,19 +2,41 @@ import LinearAlgebra, OffsetArrays, Images
 
 
 
-raw_image = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/1f/-1.png"))[280:710, 700:1350];
+# raw_image = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/1f/-1.png"))[280:710, 700:1350];
+# dat = Float64.(raw_image)
+# correction = (Float64.(Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/FFiltered_Background_Low.png"))[280:710, 700:1350])) .^(-1)
+# correction = (*(size(correction)...)/sum(correction)) * correction;
+# dat = dat .* correction
+
+# Images.Gray.(dat);
+
+# N_X_MIN = 1.5
+# N_X_MAX = 3.5
+# N_Y_MIN = 0
+# N_Y_MAX = 2
+# resolution = 0.001
+
+
+
+
+
+raw_image = 100 .* Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/1faligned.tif"))[180:800, 750:1200];
+
 dat = Float64.(raw_image)
-correction = (Float64.(Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/FFiltered_Background_Low.png"))[280:710, 700:1350])) .^(-1)
-correction = (*(size(correction)...)/sum(correction)) * correction;
+
+
+correction = (Float64.(Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/backgroundnowedge.tif"))[180:800, 750:1200])) .^ (-1)
+correction = (*(size(correction)...) / sum(correction)) * correction;
 dat = dat .* correction
 
-Images.Gray.(dat);
-
-N_X_MIN = 1.5
-N_X_MAX = 3.5
-N_Y_MIN = 0
-N_Y_MAX = 2
+Images.Gray.(dat)
+#lawrence 1faligned
+N_X_MIN = 0
+N_X_MAX = 1.5
+N_Y_MIN = 1.5
+N_Y_MAX = 3.5
 resolution = 0.001
+
 
 (N, M) = size(dat)
 dat = dat - ones(Float64, size(dat)...) * sum(dat) / *(size(dat)...)
@@ -31,12 +53,12 @@ pFTR = exp.(-im * [i * j for i in 1:M, j in K_X])
 
 
 pftdat = abs.(pFTL * dat * pFTR)
-# A = max(pftdat...)
-# pftdat = pftdat * (1 / A)
-# downsample_factor = 10
-# downsampled = pftdat[1:downsample_factor:size(pftdat)[1], 1:downsample_factor:size(pftdat)[2]]
-# downsampled = downsampled / max(downsampled...)
-# Images.Gray.(downsampled)
+A = max(pftdat...)
+pftdat = pftdat * (1 / A)
+downsample_factor = 10
+downsampled = pftdat[1:downsample_factor:size(pftdat)[1], 1:downsample_factor:size(pftdat)[2]]
+downsampled = downsampled / max(downsampled...)
+Images.Gray.(downsampled)
 
 
 
@@ -81,7 +103,7 @@ end
 
 
 
-
+η = ϕ
 
 
 ϕ_res = 0.001
@@ -90,9 +112,9 @@ end
 η_vec = Vector{Float64}((ϕ-δϕ):ϕ_res:(ϕ+δϕ))
 σ = zeros(length(η_vec))
 
-η = ϕ
-(x, y) = convert_1d(dat; ϕ=(mod(η+pi,pi)-π/2))
 
+(x, y) = convert_1d(dat; ϕ=(mod(η+pi,pi)-π/2))
+Plots.plot(x,y);
 
 for (k,η) in pairs(η_vec)
     (x,y) = convert_1d(dat; ϕ = mod(η+π, π) - π/2)
@@ -114,6 +136,6 @@ Plots.plot(η_vec, σ)
 σ = zeros(length(η_vec))
 
 
-ϕ
+
 
 ImageTransformations.imrotate(raw_image,-ϕ)
