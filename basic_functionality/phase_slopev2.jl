@@ -2,7 +2,7 @@ import Images, FileIO, LinearAlgebra, LsqFit, ImageTransformations, OffsetArrays
 
 
 
-raw_image = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/1f/-1.png"))[270:710, 700:1350];
+raw_image = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/1f/-1.png"))[270:710, 700:1350]
 
 dat = Float64.(raw_image)
 
@@ -244,7 +244,7 @@ final_parms = final_fit.param
 
 
 
-raw_image = Images.Gray.(100*Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/1faligned.tif"))[270:710, 700:1310];
+raw_image = Images.Gray.(100*Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/1faligned.tif"))[270:710, 700:1310]
 
 dat = Float64.(raw_image)
 
@@ -258,7 +258,7 @@ end
 
 
 
-θ = 88.9*(pi/180)#Float64(π/2 - 0.03)
+θ = 88.0*(pi/180)#Float64(π/2 - 0.03)
 
 
 
@@ -268,7 +268,7 @@ LX = M - 1
 LY = N - 1
 
 
-Aspect= 1.2
+Aspect= 1
 (R, S) = rotation_crop(dims=size(raw_image), angle=θ, AR=Aspect)
 
 
@@ -280,8 +280,8 @@ sample = Float64.(rotated[-R:R, -S:S])
 Images.Gray.(sample)
 
 
-strip_length = 20
-strip_skip = 5
+strip_length = 10
+strip_skip = 1
 
 partitions = ((size(sample)[1] - strip_length) ÷ strip_skip) + 1
 partition_rngs = [(strip_skip*(n-1)+1):(strip_skip*(n-1)+strip_length) for n in 1:partitions]
@@ -296,7 +296,7 @@ model(r, parms::Vector{Float64}) = parms[2] * cos.(parms[1] * r .+ parms[3]) .+ 
 
 
 
-n=10
+n=400
 y = data_vec[n]
 C = sum(y) / length(y)
 A = 2 * sum(abs.(y .- C)) / length(y)
@@ -331,14 +331,16 @@ for n in 1:partitions
     # Plots.plot!(x_array, [model(x, fitting.param) for x in x_array])
 end
 
+
+
+
 @. linear_model(x, parms2) = parms2[2] + parms2[1] * x
 p0 = [0.0, 0]
 linear_fit = LsqFit.curve_fit(linear_model, Vector{Float64}(1:partitions), params[:, 3], p0)
 slope = linear_fit.param[1]
 error = LsqFit.estimate_errors(linear_fit)[1]
-append!(slope_vec, slope)
-append!(error_vec, error)
 
+Plots.plot(1:partitions, params[:,3])
 
 
 
@@ -367,9 +369,9 @@ for θ in θ_vec
     (N, M) = size(raw_image)
     LX = M - 1
     LY = N - 1
-
-
-    Aspect = 1.2
+    #Aspect = 1.2
+    #Aspect = 2.5
+    Aspect = 10
     (R, S) = rotation_crop(dims=size(raw_image), angle=θ, AR=Aspect)
 
 
@@ -428,7 +430,7 @@ end
 error_vec
 
 Plots.plot((180 / pi) * θ_vec, slope_vec, yerror = error_vec, legend=:none, xlabel="Angle (degrees)", ylabel="Phase Slope (Arbitrary Scale)",seriestype = :scatter)
-Plots.savefig("1f_aligned.pdf")
+#Plots.savefig("1f_aligned.pdf")
 
 
 final_fit = LsqFit.curve_fit(linear_model, θ_vec, slope_vec, p0)
