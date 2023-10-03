@@ -31,8 +31,8 @@ function rotation_crop(;dims::Tuple{Int64,Int64}, angle::Float64, AR::Number)
     # E34 = Meshes.Segment(C3r, C4r)
     # E41 = Meshes.Segment(C4r, C1r)
 
-    LR = Meshes.Line(Point(0, 0), Point(1.0, AR))
-    RL = Meshes.Line(Point(0, 0), Point(1.0, -AR))
+    LR = Meshes.Line(Meshes.Point(0, 0), Meshes.Point(1.0, AR))
+    RL = Meshes.Line(Meshes.Point(0, 0), Meshes.Point(1.0, -AR))
 
 
     LR_Intersections = [get(Meshes.intersection(LR, E12)), get(Meshes.intersection(LR, E23))]
