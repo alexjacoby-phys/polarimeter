@@ -1,9 +1,9 @@
 using LinearAlgebra, LsqFit
 
-ϕ = 0.2 + pi/2
+ϕ = 0.0
 
 k= 2.4*2pi
-f(x,y) = (cos(k*cos(ϕ)*x+k*sin(ϕ)y+pi/12)+1.)*0.5
+f(x, y) = (cos(k * cos(ϕ) * x + k * sin(ϕ)y) + cos(2*k * cos(ϕ) * x + 2*k * sin(ϕ)y) + 1.0) * 0.5
 
 x_array = Vector{Float64}(0:0.001:1)
 y_array = Vector{Float64}(0:0.001:1)

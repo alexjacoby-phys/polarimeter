@@ -150,7 +150,7 @@ end
 
 
 
-# this is the main 1d converter function. It accepts and requires the following arguments: dat (picture in matrix form), ϕ (angle), LX, LY (collectively the number of x, and y pixels. Note that this appears backwards, i.e., y comes first), no_partitions (number of points along the propagation direction-- how many points in x axis divided by two), pixel_fraction (determines the number of points that are averaged along an equal phase line to get a single y axis point)
+"this is the main 1d converter function. It accepts and requires the following arguments: dat (picture in matrix form), ϕ (angle), LX, LY (collectively the number of x, and y pixels. Note that this appears backwards, i.e., y comes first), no_partitions (number of points along the propagation direction-- how many points in x axis divided by two), pixel_fraction (determines the number of points that are averaged along an equal phase line to get a single y axis point)"
 function convert_1d(dat::Matrix{Float64}; ϕ::Float64, no_partitions::Int64 = 1000, pixel_fraction= 1.0)
     ϕ = ϕ = mod(ϕ + π / 2, π) - π / 2
     n1 = [cos(ϕ), -sin(ϕ)] * (pixel_fraction)
@@ -173,7 +173,7 @@ function convert_1d(dat::Matrix{Float64}; ϕ::Float64, no_partitions::Int64 = 10
 end
 
 
-#DON'T USE THIS ONE. IT IS SLOWER. this is the main 1d converter function. It accepts and requires the following arguments: dat (picture in matrix form), ϕ (angle), LX, LY (collectively the number of x, and y pixels. Note that this appears backwards, i.e., y comes first), no_partitions (number of points along the propagation direction-- how many points in x axis divided by two), pixel_fraction (determines the number of points that are averaged along an equal phase line to get a single y axis point)
+"DON'T USE THIS ONE. IT IS SLOWER. this is the main 1d converter function. It accepts and requires the following arguments: dat (picture in matrix form), ϕ (angle), LX, LY (collectively the number of x, and y pixels. Note that this appears backwards, i.e., y comes first), no_partitions (number of points along the propagation direction-- how many points in x axis divided by two), pixel_fraction (determines the number of points that are averaged along an equal phase line to get a single y axis point)"
 function convert_1dv2(dat::Matrix{Float64}; ϕ::Float64, no_partitions::Int64=1000, pixel_fraction=1.0)
     ϕ = ϕ = mod(ϕ + π / 2, π) - π / 2
     n1 = [cos(ϕ), -sin(ϕ)] * (pixel_fraction)
