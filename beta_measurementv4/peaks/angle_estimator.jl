@@ -170,3 +170,133 @@ Plots.plot(ϕ_vec_deg)
 
 
 
+cd("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/peaks/peaks_png/")
+
+small_fn = small_fn_vec[21]
+raw_image = Images.Gray.(Images.load(string(small_fn, ".png")))[270:710, 700:1350]
+dat = Float64.(raw_image)
+
+correction = (Float64.(Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/background_low_intensity.png"))[270:710, 700:1350])) .^ (-1)
+correction = (*(size(correction)...) / sum(correction)) * correction
+dat = dat .* correction
+
+
+
+
+
+
+
+
+(N, M) = size(dat)
+
+#dat = [0.5*(1+cos((i+j)/100)) for i in 1:1080, j in 1:1440]
+
+
+dat = dat - ones(Float64, size(dat)...) * sum(dat) / *(size(dat)...)
+
+
+
+
+N_X_MAX = 6.5
+N_X_MIN = 4
+N_Y_MAX = 2.0
+N_Y_MIN = 0
+resolution = 0.001
+
+
+
+
+K_X = vcat(Vector{Float64}(2 * pi * (-N_X_MAX:resolution:-N_X_MIN) / M), Vector{Float64}(2 * pi * (N_X_MIN:resolution:N_X_MAX) / M))
+K_Y = vcat(Vector{Float64}(2 * pi * (-N_Y_MAX:resolution:-N_Y_MIN) / N), Vector{Float64}(2 * pi * (N_Y_MIN:resolution:N_Y_MAX) / N))
+
+
+pFTL = exp.(-im * [i * j for i in K_Y, j in 1:N])
+
+pFTR = exp.(-im * [i * j for i in 1:M, j in K_X])
+
+
+
+
+
+
+
+pftdat = abs.(pFTL * dat * pFTR)
+A = max(pftdat...)
+pftdat = pftdat*(1/A)
+downsampled = pftdat[1:10:size(pftdat)[1], 1:10:size(pftdat)[2]]
+downsampled = downsampled / max(downsampled...)
+Images.Gray.(downsampled)
+
+
+
+
+(ymax, xmax) = Tuple(findmax(pftdat)[2])
+(kx, ky) = (K_X[xmax], K_Y[ymax])
+
+
+ϕ = atan(ky, kx)
+ϕ = mod(ϕ + π / 2, π) - π / 2
+ϕ_deg = ϕ * (180 / pi)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+N_X_MAX = 3.7
+N_X_MIN = 1.2
+N_Y_MAX = 2.0
+N_Y_MIN = 0
+resolution = 0.001
+
+
+
+
+
+K_X = vcat(Vector{Float64}(2 * pi * (-N_X_MAX:resolution:-N_X_MIN) / M), Vector{Float64}(2 * pi * (N_X_MIN:resolution:N_X_MAX) / M))
+K_Y = vcat(Vector{Float64}(2 * pi * (-N_Y_MAX:resolution:-N_Y_MIN) / N), Vector{Float64}(2 * pi * (N_Y_MIN:resolution:N_Y_MAX) / N))
+
+
+pFTL = exp.(-im * [i * j for i in K_Y, j in 1:N])
+
+pFTR = exp.(-im * [i * j for i in 1:M, j in K_X])
+
+
+
+
+
+
+
+pftdat = abs.(pFTL * dat * pFTR)
+A = max(pftdat...)
+pftdat = pftdat * (1 / A)
+downsampled = pftdat[1:10:size(pftdat)[1], 1:10:size(pftdat)[2]]
+downsampled = downsampled / max(downsampled...)
+Images.Gray.(downsampled)
+
+
+
+
+(ymax, xmax) = Tuple(findmax(pftdat)[2])
+(kx, ky) = (K_X[xmax], K_Y[ymax])
+
+
+ϕ = atan(ky, kx)
+ϕ = mod(ϕ + π / 2, π) - π / 2
+ϕ_deg = ϕ * (180 / pi)
