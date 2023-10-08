@@ -90,4 +90,9 @@ findmin(abs.(rel_p - 2π * ones(vl)))
 
 abs.(rel_p - 2π * ones(vl))[17]
 
-index[3,:16]
+index[3,:15]
+
+
+
+
+index = DelimitedFiles.readdlm("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/troughs/Estimated_Angles.txt")

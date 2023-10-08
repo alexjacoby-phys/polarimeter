@@ -19,31 +19,31 @@ end
 
 
 
-using Images, FFTW, LinearAlgebra
+# using Images, FFTW, LinearAlgebra
 
-function fermi(E::Number; β::Number, μ::Number)
-    return 1 / (exp(β * (E - μ)) + 1)
-end
-
-
+# function fermi(E::Number; β::Number, μ::Number)
+#     return 1 / (exp(β * (E - μ)) + 1)
+# end
 
 
-FT_DAT = FFTW.fftshift(FFTW.fft(dat))
 
 
-(N, M) = size(dat)
-distances = [LinearAlgebra.norm([y - N / 2, x - M / 2]) for y in 1:N, x in 1:M]
-distances = distances / max(distances...)
-
-filter = fermi.(distances, β=20.0, μ=0.05)
-
-Images.Gray.(abs.(FT_DAT) / (sqrt(N) * sqrt(M)))
-Images.Gray.(filter)
+# FT_DAT = FFTW.fftshift(FFTW.fft(dat))
 
 
-Images.Gray.(abs.(FFTW.ifft(FFTW.fftshift(FT_DAT .* filter))))
+# (N, M) = size(dat)
+# distances = [LinearAlgebra.norm([y - N / 2, x - M / 2]) for y in 1:N, x in 1:M]
+# distances = distances / max(distances...)
 
-dat = abs.(FFTW.ifft(FFTW.fftshift(FT_DAT .* filter)))
+# filter = fermi.(distances, β=20.0, μ=0.05)
+
+# Images.Gray.(abs.(FT_DAT) / (sqrt(N) * sqrt(M)))
+# Images.Gray.(filter)
+
+
+# Images.Gray.(abs.(FFTW.ifft(FFTW.fftshift(FT_DAT .* filter))))
+
+# dat = abs.(FFTW.ifft(FFTW.fftshift(FT_DAT .* filter)))
 
 
 
@@ -159,7 +159,7 @@ for θ in θ_vec
 
 
     strip_length = 100
-    strip_skip = 1
+    strip_skip = 2
 
     partitions = ((size(sample)[1] - strip_length) ÷ strip_skip) + 1
     partition_rngs = [(strip_skip*(n-1)+1):(strip_skip*(n-1)+strip_length) for n in 1:partitions]

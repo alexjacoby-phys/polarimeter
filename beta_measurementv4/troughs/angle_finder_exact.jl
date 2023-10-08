@@ -3,23 +3,28 @@ include("/Users/alexjacoby/Documents/Research_Code/polarimeter/basic_functionali
 include("/Users/alexjacoby/Documents/Research_Code/polarimeter/basic_functionality/1d_averager.jl")
 
 
-γ = -32. * (π/180)
-raw_imagepr = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/troughs/troughs_png/-5.png"));
 
-raw_image = OffsetArrays.centered(ImageTransformations.imrotate(raw_imagepr, γ))[-450:30,-80:540]
-dat = Float64.(raw_image)
 
-correction_imagepr = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/background_mid_intensity.png"));
-correction_image = OffsetArrays.centered(ImageTransformations.imrotate(correction_imagepr, γ))[-450:30, -80:540];
 
-correction = Float64.(correction_image)
-correction = (*(size(correction)...) / sum(correction)) * correction;
-dat = dat .* correction
-Images.Gray.(dat)
-function rotation(angle::Float64)
-    return [cos(angle) -sin(angle); sin(angle) cos(angle)]
+
+small_fn = "-5"
+
+
+begin
+    γ = -32. * (π/180)
+    raw_imagepr = Images.Gray.(Images.load(string("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/troughs/troughs_png/", small_fn, ".png")));
+
+    raw_image = OffsetArrays.centered(ImageTransformations.imrotate(raw_imagepr, γ))[-450:30,-80:540]
+    dat = Float64.(raw_image)
+
+    correction_imagepr = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/background_low_intensity.png"));
+    correction_image = OffsetArrays.centered(ImageTransformations.imrotate(correction_imagepr, γ))[-450:30, -80:540];
+
+    correction = Float64.(correction_image) .^(-1)
+    correction = (*(size(correction)...) / sum(correction)) * correction;
+    dat = dat .* correction
+    image = Images.Gray.(dat)
 end
-
 
 
 
@@ -31,7 +36,7 @@ end
 
 
 
-
+# dat = Float64.(image)
 # FT_DAT = FFTW.fftshift(FFTW.fft(dat))
 
 
@@ -57,13 +62,13 @@ end
 
 
 θ = 0.1 * (π/180)
-(N, M) = size(raw_image)
+(N, M) = size(image)
 LX = M - 1
 LY = N - 1
 
 Aspect = LX / LY
-(R, S) = rotation_crop(dims=size(raw_image), angle=θ, AR=Aspect)
-rotated = OffsetArrays.centered(ImageTransformations.imrotate(raw_image, θ));
+(R, S) = rotation_crop(dims=size(image), angle=θ, AR=Aspect)
+rotated = OffsetArrays.centered(ImageTransformations.imrotate(image, θ));
 # Plots.plot(rotated);
 # Plots.plot!([S, -S, S, -S], [R, R, -R, -R], seriestype=:scatter, color=:red)
 
@@ -71,7 +76,7 @@ rotated = OffsetArrays.centered(ImageTransformations.imrotate(raw_image, θ));
 sample = Float64.(rotated[-R:R, -S:S])
 Images.Gray.(sample)
 
-strip_length = 100
+strip_length = 200
 strip_skip = 2
 
 partitions = ((size(sample)[1] - strip_length) ÷ strip_skip) + 1
@@ -90,13 +95,15 @@ model(r::Vector{Float64}, parms::Vector{Float64}) = parms[1] * cos.(parms[4] * r
 
 params = zeros(partitions, 6)
 
+
+parms0 = [0.1, 0.05, 0.2, 2.0, 0, 0]
 for n in 1:partitions
     y = data_vec[n]
     x = π * Vector(-1.0:2/(length(y)-1):1)
-    parms0 = [0.1, 0.05, 0.2, 2.0, 0, 0]
 
     fit = LsqFit.curve_fit(model, x, y, parms0)
     params[n, :] = fit.param
+    parms0 = fit.param
     # Plots.plot(x, y, label="Data", seriestype=:scatter, legend=:topright)
     # Plots.plot!(x, model(x, fit.param), label="Fitted", linewidth=5)
 end
@@ -108,16 +115,13 @@ error = LsqFit.estimate_errors(linear_fit)[1]
 Plots.plot(1:partitions, params[:, 5]);
 Plots.plot!(1:partitions, linear_model(Vector(1:partitions), linear_fit.param))
 
-
-
+Plots.plot(1:partitions, params[:, 1])
 
 animation = Plots.@animate for n in 1:partitions
     y = data_vec[n]
     x = π * Vector(-1.0:2/(length(y)-1):1)
     parms0 = params[n,:]
-
     fit = LsqFit.curve_fit(model, x, y, parms0)
-    params[n, :] = fit.param
     Plots.plot(x, y, label="Data", seriestype=:scatter, legend=:topright)
     Plots.plot!(x, model(x, fit.param), label="Fitted", linewidth=5)
 end
@@ -161,12 +165,12 @@ slope_vec1 = []
 error_vec1 = []
 θ_vec = Vector((θ0-range):(2*range/(increments-1)):(θ0+range))
 for θ in θ_vec
-    (N, M) = size(raw_image)
+    (N, M) = size(image)
     LX = M - 1
     LY = N - 1
     Aspect = LX/LY
-    (R, S) = rotation_crop(dims=size(raw_image), angle=θ, AR=Aspect)
-    rotated = OffsetArrays.centered(ImageTransformations.imrotate(raw_image, θ))
+    (R, S) = rotation_crop(dims=size(image), angle=θ, AR=Aspect)
+    rotated = OffsetArrays.centered(ImageTransformations.imrotate(image, θ))
     # Plots.plot(rotated);
     # Plots.plot!([S, -S, S, -S], [R, R, -R, -R], seriestype=:scatter, color=:red)
 
@@ -175,7 +179,7 @@ for θ in θ_vec
 
 
 
-    strip_length = 100
+    strip_length = 200
     strip_skip = 2
 
     partitions = ((size(sample)[1] - strip_length) ÷ strip_skip) + 1

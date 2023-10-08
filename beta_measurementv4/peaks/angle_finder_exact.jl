@@ -4,21 +4,21 @@ include("/Users/alexjacoby/Documents/Research_Code/polarimeter/basic_functionali
 
 
 γ = 12.6 * (π / 180)
-raw_imagepr = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/peaks/peaks_png/-9.png"));
+begin
+    raw_imagepr = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/peaks/peaks_png/-9.png"));
 
-raw_image = OffsetArrays.centered(ImageTransformations.imrotate(raw_imagepr, γ))[-240:280, 10:600];
-dat = Float64.(raw_image)
+    raw_image = OffsetArrays.centered(ImageTransformations.imrotate(raw_imagepr, γ))[-240:280, 20:600];
+    dat = Float64.(raw_image)
 
-correction_imagepr = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/background_mid_intensity.png"));
-correction_image = OffsetArrays.centered(ImageTransformations.imrotate(correction_imagepr, γ))[-240:280, 10:600];
+    correction_imagepr = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/background_low_intensity.png"))
+    correction_image = OffsetArrays.centered(ImageTransformations.imrotate(correction_imagepr, γ))[-240:280, 20:600]
 
-correction = Float64.(correction_image)
-correction = (*(size(correction)...) / sum(correction)) * correction;
-dat = dat .* correction
-Images.Gray.(dat)
-function rotation(angle::Float64)
-    return [cos(angle) -sin(angle); sin(angle) cos(angle)]
+    correction = Float64.(correction_image) .^(-1)
+    correction = (*(size(correction)...) / sum(correction)) * correction;
+    dat = dat .* correction
+    image = Images.Gray.(dat)
 end
+
 
 
 
@@ -55,15 +55,15 @@ end
 
 
 
-θ = 0.1* (π / 180)
-(N, M) = size(raw_image)
+θ = 2*(π/180) #1.48 *(π / 180)
+(N, M) = size(image)
 LX = M - 1
 LY = N - 1
 #Aspect = 1.2
 #Aspect = 2.5
 Aspect = LX/LY
-(R, S) = rotation_crop(dims=size(raw_image), angle=θ, AR=Aspect)
-rotated = OffsetArrays.centered(ImageTransformations.imrotate(raw_image, θ));
+(R, S) = rotation_crop(dims=size(image), angle=θ, AR=Aspect)
+rotated = OffsetArrays.centered(ImageTransformations.imrotate(image, θ));
 # Plots.plot(rotated);
 # Plots.plot!([S, -S, S, -S], [R, R, -R, -R], seriestype=:scatter, color=:red)
 
@@ -72,7 +72,7 @@ sample = Float64.(rotated[-R:R, -S:S])
 Images.Gray.(sample);
 
 
-strip_length = 100
+strip_length = 200
 strip_skip = 2
 
 partitions = ((size(sample)[1] - strip_length) ÷ strip_skip) + 1
@@ -150,21 +150,6 @@ Plots.gif(animation, "moving.gif", fps=15)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 θ0 = 0 * (pi / 180)
 range = 2 * (pi / 180)
 increments = 20
@@ -177,14 +162,14 @@ error_vec1 = []
 
 
 for θ in θ_vec
-    (N, M) = size(raw_image)
+    (N, M) = size(image)
     LX = M - 1
     LY = N - 1
     #Aspect = 1.2
     #Aspect = 2.5
     Aspect = LX/LY
-    (R, S) = rotation_crop(dims=size(raw_image), angle=θ, AR=Aspect)
-    rotated = OffsetArrays.centered(ImageTransformations.imrotate(raw_image, θ))
+    (R, S) = rotation_crop(dims=size(image), angle=θ, AR=Aspect)
+    rotated = OffsetArrays.centered(ImageTransformations.imrotate(image, θ))
     # Plots.plot(rotated);
     # Plots.plot!([S, -S, S, -S], [R, R, -R, -R], seriestype=:scatter, color=:red)
 
