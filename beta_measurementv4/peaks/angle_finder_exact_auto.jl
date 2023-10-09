@@ -94,11 +94,6 @@ for (α, small_fn) in pairs(small_fn_vec)
         error1 = LsqFit.estimate_errors(linear_fit1)[1]
 
 
-        linear_fit2 = LsqFit.curve_fit(linear_model, Vector{Float64}(1:partitions), params[:, 6], p0)
-        slope2 = linear_fit2.param[1]
-        error2 = LsqFit.estimate_errors(linear_fit2)[1]
-
-
         append!(slope_vec1, slope1)
         append!(error_vec1, error1)
 
@@ -126,6 +121,6 @@ for (α, small_fn) in pairs(small_fn_vec)
     # Plots.plot!((180 / pi) * θ_vec, linear_model(θ_vec, final_parms))
 end
 
-DelimitedFiles.writedlm("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/peaks/exact_angles.txt", [small_fn_vec, final_angle_vec, final_angle_vec_deg])
+# DelimitedFiles.writedlm("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/peaks/exact_angles.txt", [small_fn_vec, final_angle_vec, final_angle_vec_deg])
 
 Plots.plot(final_angle_vec_deg)

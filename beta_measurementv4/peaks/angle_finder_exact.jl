@@ -178,7 +178,7 @@ for θ in θ_vec
 
 
 
-    strip_length = 40
+    strip_length = 300
     strip_skip = 2
 
     partitions = ((size(sample)[1] - strip_length) ÷ strip_skip) + 1

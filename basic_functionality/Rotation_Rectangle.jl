@@ -62,6 +62,24 @@ end
 
 
 
+function cf_2f(parms_entry::Vector{Float64})
+    parms = parms_entry
+    if parms_entry[1] < 0.
+        parms[5] = parms_entry[5]+π
+        parms[1] = - parms_entry[1]
+    end
+    if parms_entry[2] < 0.
+        parms[6] = parms_entry[6] + pi
+        parms[2] = - parms_entry[2]
+    end
+    if parms_entry[4] < 0 
+        parms[5] = - parms[5]
+        parms[6] = - parms[6]
+        parms[4] = - parms_entry[4]
+    end
+    parms[5:6] = mod.(parms[5:6], 2π)
+    return parms
+end
 # (N, M) = size(raw_image)
 # LX = M - 1
 # LY = N - 1

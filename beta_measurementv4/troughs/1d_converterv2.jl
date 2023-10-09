@@ -8,14 +8,22 @@ import DelimitedFiles, Plots, LsqFit
 index1 = DelimitedFiles.readdlm("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/troughs/Estimated_Angles.txt")
 index2 = DelimitedFiles.readdlm("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/troughs/exact_angles.txt")
 
-Plots.plot(index1[3, :]);
-Plots.plot!(-index2[3, :])
+ticks = -1.2:0.06:1.2
 
+Plots.plot(ticks, -index2[3, :], label="Phase Slope");
+Plots.plot!(ticks, index1[3, :], label="L2 Norm");
+Plots.plot!(title = "Trough Matched Point", ylabel = "Extracted Angle", xlabel = "Relative angle (Micrometer)")
+
+# Plots.savefig("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/Phase_Slope_Slope_Figs/troughs.pdf")
 
 small_fn_vec = vcat(reverse([string("-", i) for i in 1:20]), "0", [string("+", i) for i in 1:20])
 
 
+av1 = index1[3,:]
+av2 = index2[3,:]
 
+sum([av1[i+1] - av1[i] for i in 1:(length(av1)-1)]) / (length(av1) - 1)
+sum([av2[i+1] - av2[i] for i in 1:(length(av2)-1)]) / (length(av2) - 1)
 
 
 cd("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/troughs/troughs_png/")
@@ -89,4 +97,10 @@ p = linear_fit.param
 Plots.plot!(index2[3,:], linear_model(index2[3,:], p), linewidth = 4, label = "Fitted")
 
 
-Plots.savefig("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/troughs/Zero_Crossing.pdf")
+# Plots.savefig("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/troughs/Zero_Crossing.pdf")
+
+
+
+index2[1,17]
+
+#indices 17 and 18, of which 18 is marginally nearer. These are files -3 and -4.

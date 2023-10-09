@@ -10,21 +10,21 @@ include("/Users/alexjacoby/Documents/Research_Code/polarimeter/basic_functionali
 small_fn = "-5"
 
 
-begin
-    γ = -32. * (π/180)
-    raw_imagepr = Images.Gray.(Images.load(string("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/troughs/troughs_png/", small_fn, ".png")));
+# begin
+γ = -32.54 * (π/180)
+raw_imagepr = Images.Gray.(Images.load(string("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/troughs/troughs_png/", small_fn, ".png")))
 
-    raw_image = OffsetArrays.centered(ImageTransformations.imrotate(raw_imagepr, γ))[-450:30,-80:540]
-    dat = Float64.(raw_image)
+raw_image = OffsetArrays.centered(ImageTransformations.imrotate(raw_imagepr, γ))[-450:50,-70:530]
+dat = Float64.(raw_image)
 
-    correction_imagepr = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/background_low_intensity.png"));
-    correction_image = OffsetArrays.centered(ImageTransformations.imrotate(correction_imagepr, γ))[-450:30, -80:540];
+correction_imagepr = Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/background_low_intensity.png"))
+correction_image = OffsetArrays.centered(ImageTransformations.imrotate(correction_imagepr, γ))[-450:50, -70:530];
 
-    correction = Float64.(correction_image) .^(-1)
-    correction = (*(size(correction)...) / sum(correction)) * correction;
-    dat = dat .* correction
-    image = Images.Gray.(dat)
-end
+correction = Float64.(correction_image) .^(-1)
+correction = (*(size(correction)...) / sum(correction)) * correction;
+dat = dat .* correction
+image = Images.Gray.(dat)
+# end
 
 
 
@@ -61,7 +61,7 @@ end
 
 
 
-θ = 0.1 * (π/180)
+θ = 0. * (π/180)
 (N, M) = size(image)
 LX = M - 1
 LY = N - 1
@@ -76,8 +76,8 @@ rotated = OffsetArrays.centered(ImageTransformations.imrotate(image, θ));
 sample = Float64.(rotated[-R:R, -S:S])
 Images.Gray.(sample)
 
-strip_length = 200
-strip_skip = 2
+strip_length = 30
+strip_skip = 1
 
 partitions = ((size(sample)[1] - strip_length) ÷ strip_skip) + 1
 partition_rngs = [(strip_skip*(n-1)+1):(strip_skip*(n-1)+strip_length) for n in 1:partitions]
@@ -115,7 +115,7 @@ error = LsqFit.estimate_errors(linear_fit)[1]
 Plots.plot(1:partitions, params[:, 5]);
 Plots.plot!(1:partitions, linear_model(Vector(1:partitions), linear_fit.param))
 
-Plots.plot(1:partitions, params[:, 1])
+
 
 animation = Plots.@animate for n in 1:partitions
     y = data_vec[n]
@@ -160,7 +160,7 @@ Plots.gif(animation, "moving.gif", fps=15)
 
 θ0 = 0 * (pi / 180)
 range = 2*(pi/180)
-increments = 20
+increments = 40
 slope_vec1 = []
 error_vec1 = []
 θ_vec = Vector((θ0-range):(2*range/(increments-1)):(θ0+range))
@@ -179,8 +179,8 @@ for θ in θ_vec
 
 
 
-    strip_length = 200
-    strip_skip = 2
+    strip_length = 30
+    strip_skip = 1
 
     partitions = ((size(sample)[1] - strip_length) ÷ strip_skip) + 1
     partition_rngs = [(strip_skip*(n-1)+1):(strip_skip*(n-1)+strip_length) for n in 1:partitions]

@@ -8,16 +8,23 @@ import DelimitedFiles, Plots, LsqFit
 index1 = DelimitedFiles.readdlm("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/1f/Estimated_Angles.txt")
 index2 = DelimitedFiles.readdlm("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/1f/exact_angles.txt")
 
-Plots.plot(index1[3, :]);
-Plots.plot!(-index2[3, :])
+ticks = -1.2:0.06:1.2
+
+Plots.plot(ticks, -index2[3, :], label="Phase Slope");
+Plots.plot!(ticks, index1[3, :], label="L2 Norm");
+Plots.plot!(title="1f Point", ylabel="Extracted Angle", xlabel="Relative angle (Micrometer)")
+
+Plots.savefig("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/Phase_Slope_Slope_Figs/1f.pdf")
 
 
 small_fn_vec = vcat(reverse([string("-", i) for i in 1:20]), "0", [string("+", i) for i in 1:20])
 
+av1 = index1[3,:]
+av2 = -index2[3,:]
+sum(av1-av2)/vl
 
-
-
-
+sum([av1[i+1] - av1[i] for i in 1:(length(av1)-1)]) / (length(av1) - 1)
+sum([av2[i+1] - av2[i] for i in 1:(length(av2)-1)]) / (length(av2) - 1)
 
 
 cd("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/1f/1f_png/")

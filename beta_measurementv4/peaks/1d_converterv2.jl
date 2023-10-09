@@ -8,15 +8,25 @@ import DelimitedFiles, Plots, LsqFit
 index1 = DelimitedFiles.readdlm("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/peaks/Estimated_Angles.txt")
 index2 = DelimitedFiles.readdlm("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/peaks/exact_angles.txt")
 
-Plots.plot(index1[3,:]);
-Plots.plot!(-index2[3,:])
+ticks = -1.8:0.06:1.2
+
+Plots.plot(ticks, -index2[3, :], label="Phase Slope");
+Plots.plot!(ticks, index1[3, :], label="L2 Norm");
+Plots.plot!(title="Peak Matched Point", ylabel="Extracted Angle", xlabel="Relative angle (Micrometer)")
+
+# Plots.savefig("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/Phase_Slope_Slope_Figs/peaks.pdf")
+
+
 
 
 small_fn_vec = vcat(reverse([string("-", i) for i in 1:30]), "0", [string("+", i) for i in 1:20])
 
+av1 = index1[3,:]
+av2 = -index2[3,:]
 
-
-
+sum((av1-av2)/vl)
+sum([av1[i+1] - av1[i] for i in 1:(length(av1)-1)]) / (length(av1) - 1)
+sum([av2[i+1] - av2[i] for i in 1:(length(av2)-1)]) / (length(av2) - 1)
 
 cd("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/peaks/peaks_png/")
 
@@ -78,7 +88,8 @@ end
 Plots.gif(ani, "/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/peaks/Peak_Fullrange.gif")
 
 
-
+findmin(abs.(parms[:,6]))
+abs.(parms[:, 6])[23]
 
 Plots.plot(index2[3, :], parms[:, 6], yerror=error[:, 6], seriestype=:scatter, label="Relative Phase", title="Relative Phases for Peak Matched Point")
 linear_model(x::Vector{Float64}, parms2::Vector{Float64}) = parms2[2] .+ parms2[1] * x
@@ -89,3 +100,7 @@ p = linear_fit.param
 
 Plots.plot!(index2[3, :], linear_model(index2[3, :], p), linewidth=4, label="Fitted")
 Plots.savefig("/Users/alexjacoby/Documents/Research_Code/polarimeter/beta_measurementv4/peaks/Peaks_Zero_Crossing.pdf")
+
+
+## matched point is between indices 22 and 23; files -8 or -9
+index2[3,22]
