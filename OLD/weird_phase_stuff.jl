@@ -114,3 +114,19 @@ Plots.plot(abs.(analytic_y_f)[1:100])
 
 
 angle(analytic_y_f[5])
+
+
+
+
+
+
+
+
+
+
+
+import Images, FileIO
+
+
+Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/OLD/1faligned.tif")) * 64
+Images.Gray.(Images.load("/Users/alexjacoby/Documents/Research_Code/polarimeter/OLD/backgroundnowedge.tif")) * 64
